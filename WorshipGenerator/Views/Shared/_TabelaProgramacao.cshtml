@@ -1,0 +1,22 @@
+﻿@model Programacao
+@{ 
+    Layout = null;
+}
+    <h3>Programação</h3>
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Responsável</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Momento momento in Model.Momentos)
+            {
+                <tr>
+                    <td>@momento.Nome</td>
+                    <td>@momento.Responsavel</td>
+                </tr>
+            }
+        </tbody>
+    </table>

@@ -1,0 +1,62 @@
+﻿@model Programacao
+@{
+    //Layout = null;
+    ViewData["Title"] = "Programacao";
+}
+
+<div class="container">
+    <section class="programacao-section">
+        <div class="col-12 pt-3">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Informações Gerais</h3>
+                    <hr />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <strong id="programacao-local">@Model.Local</strong>
+                </div>
+                <div class="col-4">
+                    <strong id="programacao-data">@Model.Data</strong>
+                </div>
+                <div class="col-3">
+                    <strong id="programacao-hora">@Model.Hora</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 pt-5" id="conteudo-tabela">
+            <h3>Programação</h3>
+            <table class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Responsável</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Momentos != null && Model.Momentos.Count > 0)
+                    {
+                        foreach (Momento momento in Model.Momentos)
+                        {
+                            <tr>
+                                <td>@momento.Nome</td>
+                                <td>@momento.Responsavel</td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-12 text-center d-print-none">
+            <hr />
+            <button class="btn btn-success" id="gerar-pdf"><i class="fas fa-check"></i> Gerar PDF</button>
+            <button class="btn btn-danger" id="duplicar"><i class="fas fa-plus"></i> Duplicar</button>
+        </div>
+    </section>
+</div>
+
+

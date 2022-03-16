@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<section id="mainCarouselSection">
+    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="~/assets/images/carousel/1.png" alt="First slide">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Gerador de programação</h5>
+                    <p>Crie e organize a programação para os eventos da IBET</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+
+    <div class="mt-5"></div>
+
+    <div class="col-12">
+
+        <div class="row">
+            <div class="col-12">
+                <h3>Informações Gerais</h3>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <label class="control-label">Data</label>
+                <input type="text" class="form-control data-programacao" />
+            </div>
+            <div class="col-12 col-md-6">
+                <label class="control-label">Horário</label>
+                <input type="text" class="form-control hora-programacao" />
+            </div>
+            <div class="col-12 mt-2">
+                <label class="control-label">Local</label>
+                <input type="text" class="form-control local-programacao" value="Igreja Batista Esperança em Tatuapé" />
+            </div>
+        </div>
+
+        <div class="mt-5"></div>
+
+        <div class="row">
+            <div class="col-12">
+                <h3>Programação</h3>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row text-center mt-3 d-none d-md-flex">
+            <div class="col-5">
+                <h4 class="">Momento</h4>
+            </div>
+            <div class="col-5">
+                <h4 class="">Responsável</h4>
+            </div>
+            <div class="col-2">
+                <h4 class="">Ações</h4>
+            </div>
+        </div>
+
+        <div class="mt-1 mb-1 d-none d-md-block"><hr /></div>
+
+        <fieldset class="momento">
+            <div class="row text-center linha-momento mt-2">
+                <div class="col-7 d-block d-md-none">
+                    <input type="text" class="form-control nome-momento" placeholder="Momento"/>
+                    <input type="text" class="form-control responsavel-momento mt-3" placeholder="Responsável"/>
+                </div>
+                <div class="col-5 d-none d-md-block">
+                    <input type="text" class="form-control nome-momento" />
+                </div>
+                <div class="col-5 d-none d-md-block">
+                    <input type="text" class="form-control responsavel-momento" />
+                </div>
+                <div class="col-5 col-md-2">
+                    <button class="btn btn-sm btn-dark adicionar-momento" data-toggle="tooltip" title="Novo momento"><i class="fas fa-plus"></i></button>
+                    <button class="btn btn-sm btn-danger remover-momento" data-toggle="tooltip" title="Remover momento" disabled="disabled"><i class="fas fa-minus"></i></button>
+                    <button class="btn btn-sm btn-default mover-cima-momento" data-toggle="tooltip" title="Mover para cima" disabled="disabled"><i class="fas fa-arrow-up"></i></button>
+                    <button class="btn btn-sm btn-default mover-baixo-momento" data-toggle="tooltip" title="Mover para baixo" disabled="disabled"><i class="fas fa-arrow-down"></i></button>
+                </div>
+            </div>
+            @*<div class="row text-center linha-momento d-block d-md-none">
+
+            </div>*@
+        </fieldset>
+
+
+        <div class="mt-5 mb-1"><hr /></div>
+
+        <div class="text-center">
+            <button class="btn btn-success btn-lg" id="gerar-programacao-button"><i class="fas fa-check"></i> Gerar Programação</button>
+        </div>
+    </div>
+</div>
