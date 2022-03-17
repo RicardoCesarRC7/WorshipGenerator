@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WorshipGenerator.Models.Base;
 using WorshipGenerator.Models;
+using Firebase.Database.Query;
+using WorshipGenerator.Models.Enums;
 
 namespace WorshipGenerator.Models.Repositories.Musica
 {
@@ -79,6 +81,34 @@ namespace WorshipGenerator.Models.Repositories.Musica
                 {
                     
                 }
+            }
+
+            return result;
+        }
+
+        public async Task<List<RelacaoPeriodica>> ListarRelacoes()
+        {
+            var result = new List<RelacaoPeriodica>();
+
+            try
+            {
+                var relacoes = await _firebaseClient.Child("RelacoesMusicais").OnceAsync<RelacaoPeriodica>();
+
+                if (relacoes != null && relacoes.Count > 0)
+                {
+                    foreach (var relacao in relacoes)
+                    {
+                        RelacaoPeriodica relacaoPeriodica = relacao.Object;
+
+                        relacaoPeriodica.Tipo = ERelacaoTipo.MUSICAL;
+                        relacaoPeriodica.Id = relacao.Key;
+
+                        result.Add(relacaoPeriodica);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
             }
 
             return result;

@@ -1,7 +1,12 @@
 ﻿$(document).ready(() => {
 
-    if (window.location.search == '')
+    $(() => $('[data-toggle="tooltip"]').tooltip());
+
+    if (window.location.search == '') {
+
         getProgramacoesList();
+        getRelacoesMusicaisList();
+    }
 });
 
 const getAppRoot = () => window.location.protocol + '//' + window.location.host + '/';
@@ -23,8 +28,15 @@ $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
 
 const getProgramacoesList = () => {
 
-    $.get(getAppRoot() + 'Programacao/ListAll', (result) => {
+    $.get(getAppRoot() + 'Programacao/ListarProgramacoes', (result) => {
 
         $('#ultimas-programacoes-section').append(result);
+    });
+}
+const getRelacoesMusicaisList = () => {
+
+    $.get(getAppRoot() + 'Musica/ListarRelacoes', (result) => {
+
+        $('#ultimas-relacoes-musicais-section').append(result);
     });
 }

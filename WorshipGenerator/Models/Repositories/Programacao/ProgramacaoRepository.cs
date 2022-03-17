@@ -64,6 +64,8 @@ namespace WorshipGenerator.Models.Repositories.Programacao
 
                         result.Add(programa);
                     }
+
+                    result = result.OrderByDescending(i => i.Data).Take(5).ToList();
                 }
             }
             catch (Exception e)
@@ -71,7 +73,7 @@ namespace WorshipGenerator.Models.Repositories.Programacao
                 result = new List<Models.Programacao>();
             }
 
-            return result.OrderByDescending(i => i.Data).Take(5).ToList();
+            return result;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace WorshipGenerator.Controllers
     public class MusicaController : Controller
     {
         private readonly IMusicaRepository _musicaRepository;
+        private readonly ILogger<MusicaController> _logger;
 
-        public MusicaController(IMusicaRepository musicaRepository)
+        public MusicaController(IMusicaRepository musicaRepository, ILogger<MusicaController> logger)
         {
             _musicaRepository = musicaRepository;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -24,12 +27,19 @@ namespace WorshipGenerator.Controllers
 
         public IActionResult CriarRelacao()
         {
-            return View("CriarRelacaoMusicas");
+            return View();
         }
 
-        public IActionResult Gerenciamento()
+        public IActionResult ConsultarRelacao()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Gerenciamento()
+        {
+            var musicas = await _musicaRepository.Listar();
+
+            return View(musicas);
         }
 
         [HttpPost]
@@ -41,19 +51,26 @@ namespace WorshipGenerator.Controllers
         [HttpPost]
         public IActionResult CarregarItensRelacao(string deRequest, string ateRequest)
         {
-            List<DateTime> domingos = new();
+            List<DateTime> domingos = new List<DateTime>();
 
             if (!string.IsNullOrEmpty(deRequest) && !string.IsNullOrEmpty(deRequest))
             {
-                DateTime dataAtual = Convert.ToDateTime(deRequest);
-                DateTime ate = Convert.ToDateTime(ateRequest);
-
-                while (dataAtual <= ate)
+                try
                 {
-                    if (dataAtual.DayOfWeek == DayOfWeek.Sunday)
-                        domingos.Add(dataAtual);
+                    DateTime dataAtual = Convert.ToDateTime(deRequest);
+                    DateTime ate = Convert.ToDateTime(ateRequest);
 
-                    dataAtual = dataAtual.AddDays(1);
+                    while (dataAtual <= ate)
+                    {
+                        if (dataAtual.DayOfWeek == DayOfWeek.Sunday)
+                            domingos.Add(dataAtual);
+
+                        dataAtual = dataAtual.AddDays(1);
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.LogInformation("Erro carregando itens de relacao musical: " + e.Message, e);
                 }
 
                 return PartialView("_AdicionarItensRelacaoMusicas", domingos);
@@ -72,6 +89,14 @@ namespace WorshipGenerator.Controllers
         public async Task<IActionResult> AdicionarRelacaoMusical(RelacaoPeriodica request)
         {
             return Json(await _musicaRepository.AdicionarRelacao(request));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListarRelacoes()
+        {
+            var relacoes = await _musicaRepository.ListarRelacoes();
+
+            return PartialView("_ListaRelacoesMusicais", relacoes);
         }
     }
 }

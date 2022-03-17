@@ -29,7 +29,7 @@ namespace WorshipGenerator.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ListAll()
+        public async Task<IActionResult> ListarProgramacoes()
         {
             var programacoes = await _programacaoRepository.ListAll();
 
