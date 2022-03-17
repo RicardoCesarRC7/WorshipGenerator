@@ -18,7 +18,7 @@
                     <strong id="programacao-local">@Model.Local</strong>
                 </div>
                 <div class="col-4">
-                    <strong id="programacao-data">@Model.Data</strong>
+                    <strong id="programacao-data">@Model.Data.ToShortDateString()</strong>
                 </div>
                 <div class="col-3">
                     <strong id="programacao-hora">@Model.Hora</strong>

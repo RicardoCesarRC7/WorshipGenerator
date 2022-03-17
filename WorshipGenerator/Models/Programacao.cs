@@ -8,6 +8,10 @@ namespace WorshipGenerator.Models
     public class Programacao
     {
         public Programacao() { }
+        public Programacao(string data)
+        {
+            Data = Convert.ToDateTime(data);
+        }
 
         public string Id { get; set; }
         public string Local { get; set; }
