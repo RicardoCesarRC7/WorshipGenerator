@@ -193,7 +193,7 @@ const generateRelacaoMusicalRequestObject = () => {
 
     request.relacoesMusicais = [];
 
-    $('.relacao-musical').each((index, relacaoMusicalElement) => {asdasdasdasdsadasdsad
+    $('.relacao-musical').each((index, relacaoMusicalElement) => {
 
         let musicas = [];
 
