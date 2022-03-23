@@ -87,3 +87,32 @@ body {
         margin-left: .1rem;
         margin-right: .1rem;
     }
+
+@media screen and (max-width: 768px) {
+
+    td.hidden-xs, th.hidden-xs {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+
+    td.hidden-sm, th.hidden-sm {
+        display: none;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+
+    td.hidden-md, th.hidden-md {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    td.hidden-lg {
+        display: none;
+    }
+}
+

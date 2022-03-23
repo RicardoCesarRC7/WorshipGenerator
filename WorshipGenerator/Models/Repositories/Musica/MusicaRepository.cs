@@ -44,6 +44,20 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return result;
         }
 
+        public async Task<Models.Musica> Buscar(string id)
+        {
+            Models.Musica musica = null;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                musica = await _firebaseClient.Child("Musicas").Child(id).OnceSingleAsync<Models.Musica>();
+
+                musica.Id = id;
+            }
+
+            return musica;
+        }
+
         public async Task<List<Models.Musica>> Listar()
         {
             List<Models.Musica> musicas = new List<Models.Musica>();
@@ -84,6 +98,37 @@ namespace WorshipGenerator.Models.Repositories.Musica
             }
 
             return result;
+        }
+
+        public async Task<RelacaoPeriodica> BuscarRelacao(string id)
+        {
+            RelacaoPeriodica relacao = null;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                relacao = await _firebaseClient.Child("RelacoesMusicais").Child(id).OnceSingleAsync<RelacaoPeriodica>();
+
+                if (relacao != null && relacao.RelacoesMusicais != null && relacao.RelacoesMusicais.Count > 0)
+                {
+                    foreach (var relacaoMusical in relacao.RelacoesMusicais)
+                    {
+                        if (relacaoMusical.Musicas != null && relacaoMusical.Musicas.Count > 0)
+                        {
+                            foreach (var musica in relacaoMusical.Musicas)
+                            {
+                                var result = await Buscar(musica.Id);
+
+                                musica.Nome = result.Nome;
+                                musica.Autor = result.Autor;
+                                musica.Pagina = result.Pagina;
+                                musica.Edicao = result.Edicao;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return relacao;
         }
 
         public async Task<List<RelacaoPeriodica>> ListarRelacoes()

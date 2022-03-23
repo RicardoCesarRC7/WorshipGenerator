@@ -9,6 +9,7 @@ namespace WorshipGenerator.Models
     public class RelacaoPeriodica
     {
         public string Id { get; set; }
+        public string Autor { get; set; }
         public ERelacaoTipo Tipo { get; set; }
         public DateTime De { get; set; }
         public DateTime Ate { get; set; }

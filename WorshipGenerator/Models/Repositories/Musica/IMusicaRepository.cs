@@ -9,6 +9,7 @@ namespace WorshipGenerator.Models.Repositories.Musica
         Task<BaseResult> Adicionar(Models.Musica musica);
         Task<List<Models.Musica>> Listar();
         Task<BaseResult> AdicionarRelacao(RelacaoPeriodica relacaoMusical);
+        Task<RelacaoPeriodica> BuscarRelacao(string id);
         Task<List<Models.RelacaoPeriodica>> ListarRelacoes();
     }
 }

@@ -30,9 +30,11 @@ namespace WorshipGenerator.Controllers
             return View();
         }
 
-        public IActionResult ConsultarRelacao()
+        public async Task<IActionResult> DetalhesRelacao(string id)
         {
-            return View();
+            var relacaoMusical = await _musicaRepository.BuscarRelacao(id);
+
+            return View(relacaoMusical);
         }
 
         public async Task<IActionResult> Gerenciamento()
