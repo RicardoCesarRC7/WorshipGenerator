@@ -1,6 +1,35 @@
-﻿$(document).ready(() => {
+﻿const EAcao = {
+    CRIAR: 1,
+    EDITAR: 2
+}
 
-    $('#adicionar-musica-button').on('click', () => salvarMusica());
+const gerenciamento = {
+    acao: EAcao.CRIAR
+}
+
+var musicas = [];
+
+$(document).ready(() => {
+
+    listarMusicas();
+
+    $('#adicionar-editar-musica-button').on('click', () => {
+
+        if (gerenciamento.acao == EAcao.CRIAR)
+            salvarMusica();
+        else
+            editarMusica();
+    });
+
+    $('#adicionar-musica-button').on('click', () => abrirGerenciarMusicaModal('', EAcao.CRIAR));
+
+    $('.editar-musica-button').on('click', () => {
+
+        const id = getMusicaIdFromTable();
+
+        abrirGerenciarMusicaModal(id, EAcao.EDITAR);
+    });
+    $('.remover-musica-button').on('click', () => removerMusica(event.target));
 
     $('#confirmar-datas-relacao-musicas').on('click', () => carregarItensRelacao());
 });
@@ -9,12 +38,7 @@ initSelect2 = () => $('.musica-relacao-select').select2();
 
 const salvarMusica = () => {
 
-    let musica = {};
-
-    musica.nome = $('#nome-nova-musica').val();
-    musica.autor = $('#autor-nova-musica').val();
-    musica.pagina = $('#pagina-nova-musica').val();
-    musica.edicao = $('#edicao-nova-musica').val();
+    let musica = gerarMusicaRequestObject();
 
     if (musica.nome.length > 0 && musica.autor.length > 0 && musica.pagina.length > 0 && musica.pagina.length > 0) {
 
@@ -51,12 +75,99 @@ const salvarMusica = () => {
     }
 }
 
+const editarMusica = () => {
+
+    let musica = gerarMusicaRequestObject();
+
+    if (musica.nome.length > 0 && musica.autor.length > 0 && musica.pagina.length > 0 && musica.pagina.length > 0) {
+
+        $.post(getAppRoot() + 'Musica/EditarMusica', musica, (result) => {
+
+            if (result.success) {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Música atualizada!',
+                    text: 'A música foi atualizada com sucesso.'
+                }).then(() => {
+
+                    limparCamposNovaMusica();
+                    $('#adicionar-musica-modal').modal('toggle');
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algo deu errado. Tente novamente mais tarde.'
+                });
+            }
+        });
+
+    } else {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Insira todas as informações: nome, autor, página e edição'
+        });
+    }
+}
+
+const gerarMusicaRequestObject = () => {
+
+    let request = {};
+
+    request.id = $('#id-musica').val();
+    request.nome = $('#nome-musica').val();
+    request.autor = $('#autor-musica').val();
+    request.pagina = $('#pagina-musica').val();
+    request.edicao = $('#edicao-musica').val();
+
+    return request;
+}
+
+const removerMusica = (target) => {
+
+    const id = getMusicaIdFromTable();
+
+    if (id.length > 0) {
+
+        $.post(getAppRoot() + 'Musica/RemoverMusica', { id: id }, (response) => {
+
+            if (response != null && response.success) {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Música removida!',
+                    text: 'A música foi removida com sucesso.'
+                }).then(() => {
+
+
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algo deu errado. Tente novamente mais tarde.'
+                });
+            }
+        });
+    }
+}
+
+const getMusicaIdFromTable = () => $(event.target).parentsUntil($('tbody'), 'tr').find('td.musica-id').text();
+
 const limparCamposNovaMusica = () => {
 
-    $('#nome-nova-musica').val('');
-    $('#autor-nova-musica').val('');
-    $('#pagina-nova-musica').val('');
-    $('#edicao-nova-musica').val('1');
+    $('#id-musica').val('');
+    $('#nome-musica').val('');
+    $('#autor-musica').val('');
+    $('#pagina-musica').val('');
+    $('#edicao-musica').val('1');
 }
 
 const carregarItensRelacao = () => {
@@ -72,7 +183,7 @@ const carregarItensRelacao = () => {
 
             $('#itens-relacao-musicas').append(itensRelacao);
 
-            listarMusicas();
+            listarMusicasDropdown();
 
             initSelect2();
             initAdicionarMusicaAction();
@@ -82,7 +193,7 @@ const carregarItensRelacao = () => {
     }
 }
 
-const listarMusicas = () => {
+const listarMusicasDropdown = () => {
 
     $.get(getAppRoot() + 'Musica/ListarMusicas', (musicas) => {
 
@@ -96,6 +207,35 @@ const listarMusicas = () => {
             });
         }
     });
+}
+
+const listarMusicas = () => {
+
+    $.get(getAppRoot() + 'Musica/ListarMusicas', (response) => {
+        musicas = response.$values;
+    });
+}
+
+const abrirGerenciarMusicaModal = (id, acao) => {
+
+    gerenciamento.acao = acao;
+
+    if (gerenciamento.acao == EAcao.CRIAR)
+        $('#gerenciar-musica-modal-title').text('Criar Música');
+    else {
+
+        $('#gerenciar-musica-modal-title').text('Editar Música');
+
+        let musica = musicas.filter(i => i.id == id)[0];
+
+        $('#id-musica').val(id);
+        $('#nome-musica').val(musica.nome);
+        $('#autor-musica').val(musica.autor);
+        $('#pagina-musica').val(musica.pagina);
+        $('#edicao-musica').val(musica.edicao);
+    }
+
+    $('#adicionar-musica-modal').modal('toggle');
 }
 
 const adicionarLinhaMusica = (divMusica) => {

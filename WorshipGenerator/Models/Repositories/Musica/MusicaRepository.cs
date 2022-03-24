@@ -44,6 +44,20 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return result;
         }
 
+        public async Task<BaseResult> Editar(Models.Musica musica)
+        {
+            BaseResult result = new BaseResult();
+
+            if (musica != null)
+            {
+                await _firebaseClient.Child("Musicas").Child(musica.Id).PutAsync(JsonConvert.SerializeObject(musica));
+
+                result.Success = true;
+            }
+
+            return result;
+        }
+
         public async Task<Models.Musica> Buscar(string id)
         {
             Models.Musica musica = null;
@@ -56,6 +70,27 @@ namespace WorshipGenerator.Models.Repositories.Musica
             }
 
             return musica;
+        }
+
+        public async Task<BaseResult> Remover(string id)
+        {
+            BaseResult result = new BaseResult();
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                try
+                {
+                    await _firebaseClient.Child("Musicas").Child(id).DeleteAsync();
+
+                    result.Success = true;
+                }
+                catch (Exception e)
+                {
+                    result.Message = "Ocorreu um erro durante a operação: " + e.Message;
+                }
+            }
+
+            return result;
         }
 
         public async Task<List<Models.Musica>> Listar()

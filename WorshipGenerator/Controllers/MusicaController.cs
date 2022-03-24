@@ -37,7 +37,7 @@ namespace WorshipGenerator.Controllers
             return View(relacaoMusical);
         }
 
-        public async Task<IActionResult> Gerenciamento()
+        public async Task<IActionResult> Gerenciar()
         {
             var musicas = await _musicaRepository.Listar();
 
@@ -48,6 +48,18 @@ namespace WorshipGenerator.Controllers
         public async Task<IActionResult> AdicionarMusica(Musica musica)
         {
             return Json(await _musicaRepository.Adicionar(musica));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarMusica(Musica musica)
+        {
+            return Json(await _musicaRepository.Editar(musica));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoverMusica(string id)
+        {
+            return Json(await _musicaRepository.Remover(id));
         }
 
         [HttpPost]

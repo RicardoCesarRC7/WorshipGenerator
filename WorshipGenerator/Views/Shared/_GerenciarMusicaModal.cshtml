@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Adicionar Música</h5>
+                <h5 class="modal-title" id="gerenciar-musica-modal-title">Adicionar Música</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -11,26 +11,27 @@
                 <div class="row">
                     <div class="col-12">
                         <label class="control-label">Nome</label>
-                        <input type="text" class="form-control" id="nome-nova-musica" placeholder="Insira o nome da música" />
+                        <input type="text" class="form-control" id="nome-musica" placeholder="Insira o nome da música" />
                     </div>
                     <div class="col-12 mt-3"></div>
                     <div class="col-4">
                         <label class="control-label">Autor</label>
-                        <input type="text" class="form-control" id="autor-nova-musica" placeholder="Insira o autor da música" />
+                        <input type="text" class="form-control" id="autor-musica" placeholder="Insira o autor da música" />
                     </div>
                     <div class="col-4">
                         <label class="control-label">Página</label>
-                        <input type="number" class="form-control" id="pagina-nova-musica" placeholder="Insira a página da música" />
+                        <input type="number" class="form-control" id="pagina-musica" placeholder="Insira a página da música" />
                     </div>
                     <div class="col-4">
                         <label class="control-label">Edição <i class="fas fa-info-circle" data-toggle="tooltip" title="Edição do livro na qual a música está incluída"></i></label>
-                        <input type="number" class="form-control" id="edicao-nova-musica" value="1" placeholder="Insira a edição" />
+                        <input type="number" class="form-control" id="edicao-musica" value="1" placeholder="Insira a edição" />
                     </div>
+                    <input id="id-musica" value="" style="display: none" />
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button class="btn btn-success" id="adicionar-musica-button">Salvar</button>
+                <button class="btn btn-success" id="adicionar-editar-musica-button">Salvar</button>
             </div>
         </div>
     </div>

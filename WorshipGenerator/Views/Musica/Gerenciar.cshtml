@@ -19,7 +19,7 @@
 
     <div class="row">
         <div class="col-12 text-right">
-            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#adicionar-musica-modal">Adicionar Música <i class="fas fa-plus"></i></button>
+            <button class="btn btn-success" type="button" id="adicionar-musica-button">Adicionar Música <i class="fas fa-plus"></i></button>
         </div>
     </div>
 
@@ -28,6 +28,7 @@
             <table class="table table-striped text-center">
                 <thead>
                     <tr>
+                        <th class="hidden-xs hidden-sm">Id</th>
                         <th>Nome</th>
                         <th class="hidden-xs hidden-sm">Autor</th>
                         <th class="hidden-xs hidden-sm">Página</th>
@@ -41,13 +42,14 @@
                         foreach (var item in Model)
                         {
                             <tr>
+                                <td class="hidden-xs hidden-sm musica-id">@item.Id</td>
                                 <td>@item.Nome</td>
                                 <td class="hidden-xs hidden-sm">@item.Autor</td>
                                 <td class="hidden-xs hidden-sm">@item.Pagina</td>
                                 <td class="hidden-xs hidden-sm">@item.Edicao°</td>
                                 <td>
-                                    <button class="btn btn-sm btn-dark editar-musica"><i class="fas fa-pencil-alt"></i></button>
-                                    <button class="btn btn-sm btn-danger remover-musica"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-dark editar-musica-button"><i class="fas fa-pencil-alt"></i></button>
+                                    <button class="btn btn-sm btn-danger remover-musica-button"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         }
