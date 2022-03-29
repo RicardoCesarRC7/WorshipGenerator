@@ -12,6 +12,7 @@ var musicas = [];
 $(document).ready(() => {
 
     listarMusicas();
+    listarOpcoesFontesMusicais();
 
     $('#adicionar-editar-musica-button').on('click', () => {
 
@@ -125,6 +126,8 @@ const gerarMusicaRequestObject = () => {
     request.pagina = $('#pagina-musica').val();
     request.edicao = $('#edicao-musica').val();
 
+    request.fonte = { id: $('#fonte-musica').val() }
+
     return request;
 }
 
@@ -168,6 +171,7 @@ const limparCamposNovaMusica = () => {
     $('#autor-musica').val('');
     $('#pagina-musica').val('');
     $('#edicao-musica').val('1');
+    $('#fonte-musica').val('');
 }
 
 const carregarItensRelacao = () => {
@@ -353,6 +357,22 @@ const generateRelacaoMusicalRequestObject = () => {
     });
 
     return request;
+}
+
+const listarOpcoesFontesMusicais = () => {
+
+    $.get(getAppRoot() + 'Musica/ListarFontesMusicais', (response) => {
+
+        if (response.$values.length > 0) {
+
+            $.each(response.$values, (index, item) => {
+
+                let option = new Option(item.nome, item.id, false, false);
+
+                $('#fonte-musica').append(option);
+            });
+        }
+    });
 }
 
 //const listarRelacoesMusicais = () => {

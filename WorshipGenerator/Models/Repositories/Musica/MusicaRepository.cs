@@ -36,6 +36,9 @@ namespace WorshipGenerator.Models.Repositories.Musica
 
             if (musica != null)
             {
+                if (!string.IsNullOrEmpty(musica.Fonte.Id))
+                    musica.Fonte = await BuscarFonte(musica.Fonte.Id);
+
                 await _firebaseClient.Child("Musicas").PostAsync(JsonConvert.SerializeObject(musica));
 
                 result.Success = true;
@@ -50,6 +53,9 @@ namespace WorshipGenerator.Models.Repositories.Musica
 
             if (musica != null)
             {
+                if (!string.IsNullOrEmpty(musica.Fonte.Id))
+                    musica.Fonte = await BuscarFonte(musica.Fonte.Id);
+
                 await _firebaseClient.Child("Musicas").Child(musica.Id).PutAsync(JsonConvert.SerializeObject(musica));
 
                 result.Success = true;
@@ -112,6 +118,48 @@ namespace WorshipGenerator.Models.Repositories.Musica
             }
 
             return musicas;
+        }
+
+        public async Task<List<FonteMusical>> ListarFontes()
+        {
+            List<FonteMusical> fontes = new List<FonteMusical>();
+
+            try
+            {
+                var result = await _firebaseClient.Child("FontesMusicais").OnceAsync<FonteMusical>();
+
+                if (result != null && result.Count > 0)
+                {
+                    foreach (var item in result)
+                    {
+                        FonteMusical fonte = item.Object;
+
+                        fonte.Id = item.Key;
+
+                        fontes.Add(fonte);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return fontes;
+        }
+
+        public async Task<FonteMusical> BuscarFonte(string id)
+        {
+            FonteMusical fonte = null;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                fonte = await _firebaseClient.Child("FontesMusicais").Child(id).OnceSingleAsync<FonteMusical>();
+
+                fonte.Id = id;
+            }
+
+            return fonte;
         }
 
         public async Task<BaseResult> AdicionarRelacao(RelacaoPeriodica request)
@@ -192,6 +240,21 @@ namespace WorshipGenerator.Models.Repositories.Musica
             }
 
             return result;
+        }
+
+        public async Task<bool> InserirFontesMusicais()
+        {
+            var fontes = new List<FonteMusical>
+            {
+                new FonteMusical { Nome = "Cifras IBET 1º Edição" },
+                new FonteMusical { Nome = "Cantor Cristão" },
+                new FonteMusical { Nome = "Voz de Melodia" }
+            };
+
+            foreach (var item in fontes)
+                await _firebaseClient.Child("FontesMusicais").PostAsync(item);
+
+            return true;
         }
     }
 }

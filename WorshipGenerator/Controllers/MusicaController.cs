@@ -99,6 +99,12 @@ namespace WorshipGenerator.Controllers
             return Json(await _musicaRepository.Listar());
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ListarFontesMusicais()
+        {
+            return Json(await _musicaRepository.ListarFontes());
+        }
+
         [HttpPost]
         public async Task<IActionResult> AdicionarRelacaoMusical(RelacaoPeriodica request)
         {

@@ -9,20 +9,26 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 col-md-8">
                         <label class="control-label">Nome</label>
                         <input type="text" class="form-control" id="nome-musica" placeholder="Insira o nome da música" />
                     </div>
+                    <div class="col-12 col-md-4">
+                        <label class="control-label">Fonte</label>
+                        <select class="form-control" id="fonte-musica">
+                            <option value="" disabled="disabled" selected="selected">Selecione a fonte</option>
+                        </select>
+                    </div>
                     <div class="col-12 mt-3"></div>
-                    <div class="col-4">
+                    <div class="col-12 col-md-4">
                         <label class="control-label">Autor</label>
                         <input type="text" class="form-control" id="autor-musica" placeholder="Insira o autor da música" />
                     </div>
-                    <div class="col-4">
+                    <div class="col-12 col-md-4">
                         <label class="control-label">Página</label>
                         <input type="number" class="form-control" id="pagina-musica" placeholder="Insira a página da música" />
                     </div>
-                    <div class="col-4">
+                    <div class="col-12 col-md-4">
                         <label class="control-label">Edição <i class="fas fa-info-circle" data-toggle="tooltip" title="Edição do livro na qual a música está incluída"></i></label>
                         <input type="number" class="form-control" id="edicao-musica" value="1" placeholder="Insira a edição" />
                     </div>

@@ -11,6 +11,8 @@ namespace WorshipGenerator.Models.Repositories.Musica
         Task<Models.Musica> Buscar(string id);
         Task<BaseResult> Remover(string id);
         Task<List<Models.Musica>> Listar();
+        Task<List<FonteMusical>> ListarFontes();
+        Task<bool> InserirFontesMusicais();
         Task<BaseResult> AdicionarRelacao(RelacaoPeriodica relacaoMusical);
         Task<RelacaoPeriodica> BuscarRelacao(string id);
         Task<List<Models.RelacaoPeriodica>> ListarRelacoes();
