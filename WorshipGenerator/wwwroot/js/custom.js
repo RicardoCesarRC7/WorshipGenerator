@@ -48,5 +48,5 @@ const showLoader = (text) => {
         title: 'Carregando...',
         text: text,
         showConfirmButton: false
-    })
+    });
 }

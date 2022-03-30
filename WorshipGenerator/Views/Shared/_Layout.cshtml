@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br" ng-app="worshipGeneratorApp">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,8 +27,11 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/font-awesome/dist/js/all.min.js"></script>
     <script src="~/js/custom.js" asp-append-version="true"></script>
-    <script src="~/js/programacao/programacao.page.js"></script>
-    <script src="~/js/musica/musica.page.js"></script>
+    <script src="~/js/app/app.module.js"></script>
+    <script src="~/js/app/musica/musica.controller.js"></script>
+    <script src="~/js/app/musica/relacoes-musicais.controller.js"></script>
+    @*<script src="~/js/programacao/programacao.page.js"></script>
+    <script src="~/js/musica/musica.page.js"></script>*@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

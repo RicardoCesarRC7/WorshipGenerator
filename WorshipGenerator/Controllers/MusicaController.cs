@@ -114,9 +114,7 @@ namespace WorshipGenerator.Controllers
         [HttpGet]
         public async Task<IActionResult> ListarRelacoes()
         {
-            var relacoes = await _musicaRepository.ListarRelacoes();
-
-            return PartialView("_ListaRelacoesMusicais", relacoes);
+            return Json(await _musicaRepository.ListarRelacoes());
         }
     }
 }

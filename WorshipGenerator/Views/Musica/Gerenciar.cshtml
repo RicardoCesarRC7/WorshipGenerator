@@ -14,7 +14,7 @@
     </div>
 </section>
 
-<div class="container">
+<div class="container" ng-controller="MusicaController as controller" ng-init="controller.init()">
     <div class="mt-5"></div>
 
     <div class="row">
@@ -37,29 +37,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.Count > 0)
-                    {
-                        foreach (var item in Model)
-                        {
-                            <tr>
-                                <td class="hidden-xs hidden-sm hidden-md hidden-lg musica-id">@item.Id</td>
-                                <td>@item.Nome</td>
-                                <td class="hidden-xs hidden-sm">@item.Autor</td>
-                                <td class="hidden-xs hidden-sm">@item.Pagina</td>
-                                <td class="hidden-xs hidden-sm">@item.Edicao°</td>
-                                <td>
-                                    <button class="btn btn-sm btn-dark editar-musica-button"><i class="fas fa-pencil-alt"></i></button>
-                                    <button class="btn btn-sm btn-danger remover-musica-button"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="4">Não há músicas registradas</td>
-                        </tr>
-                    }
+                    <tr ng-repeat="musica in controller.musicas">
+                        <td class="hidden-xs hidden-sm hidden-md hidden-lg musica-id">{{musica.id}}</td>
+                        <td>{{musica.nome}}</td>
+                        <td class="hidden-xs hidden-sm">{{musica.autor}}</td>
+                        <td class="hidden-xs hidden-sm">{{musica.pagina}}</td>
+                        <td class="hidden-xs hidden-sm">{{musica.edicao}}</td>l
+                        <td>
+                            <button class="btn btn-sm btn-dark editar-musica-button"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-sm btn-danger remover-musica-button"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">Não há músicas registradas</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
