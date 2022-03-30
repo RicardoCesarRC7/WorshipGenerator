@@ -40,3 +40,13 @@ const getRelacoesMusicaisList = () => {
         $('#ultimas-relacoes-musicais-section').append(result);
     });
 }
+
+const showLoader = (text) => {
+
+    Swal.fire({
+        icon: 'info',
+        title: 'Carregando...',
+        text: text,
+        showConfirmButton: false
+    })
+}

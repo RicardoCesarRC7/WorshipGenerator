@@ -43,6 +43,8 @@ const salvarMusica = () => {
 
     if (musica.nome.length > 0 && musica.autor.length > 0 && musica.pagina.length > 0 && musica.pagina.length > 0) {
 
+        showLoader('Estamos registrando as informações da Música...');
+
         $.post(getAppRoot() + 'Musica/AdicionarMusica', musica, (result) => {
 
             if (result.success) {
@@ -81,6 +83,8 @@ const editarMusica = () => {
     let musica = gerarMusicaRequestObject();
 
     if (musica.nome.length > 0 && musica.autor.length > 0 && musica.pagina.length > 0 && musica.pagina.length > 0) {
+
+        showLoader('Estamos atualizando as informações da Música...');
 
         $.post(getAppRoot() + 'Musica/EditarMusica', musica, (result) => {
 
@@ -224,8 +228,14 @@ const abrirGerenciarMusicaModal = (id, acao) => {
 
     gerenciamento.acao = acao;
 
-    if (gerenciamento.acao == EAcao.CRIAR)
+    let firstOptionDefault = $('#fonte-musica option:enabled')[0];
+
+    if (gerenciamento.acao == EAcao.CRIAR) {
+
         $('#gerenciar-musica-modal-title').text('Criar Música');
+
+        $('#fonte-musica').val($(firstOptionDefault).val());
+    }
     else {
 
         $('#gerenciar-musica-modal-title').text('Editar Música');
@@ -237,6 +247,13 @@ const abrirGerenciarMusicaModal = (id, acao) => {
         $('#autor-musica').val(musica.autor);
         $('#pagina-musica').val(musica.pagina);
         $('#edicao-musica').val(musica.edicao);
+
+        if (musica.fonte && musica.fonte.id)
+            $('#fonte-musica').val(musica.fonte.id);
+        else {
+
+            $('#fonte-musica').val($(firstOptionDefault).val());
+        }
     }
 
     $('#adicionar-musica-modal').modal('toggle');
