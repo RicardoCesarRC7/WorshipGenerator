@@ -86,11 +86,9 @@ namespace WorshipGenerator.Controllers
                 {
                     _logger.LogInformation("Erro carregando itens de relacao musical: " + e.Message, e);
                 }
-
-                return PartialView("_AdicionarItensRelacaoMusicas", domingos);
             }
 
-            return null;
+            return Json(domingos);
         }
 
         [HttpGet]

@@ -34,9 +34,9 @@ namespace WorshipGenerator.Models.Repositories.Musica
         {
             BaseResult result = new BaseResult();
 
-            if (musica != null)
+            if (musica != null && !string.IsNullOrEmpty(musica.Nome))
             {
-                if (!string.IsNullOrEmpty(musica.Fonte.Id))
+                if (musica.Fonte != null && !string.IsNullOrEmpty(musica.Fonte.Id))
                     musica.Fonte = await BuscarFonte(musica.Fonte.Id);
 
                 await _firebaseClient.Child("Musicas").PostAsync(JsonConvert.SerializeObject(musica));

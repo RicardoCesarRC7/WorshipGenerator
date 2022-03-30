@@ -19,7 +19,7 @@
 
     <div class="row">
         <div class="col-12 text-right">
-            <button class="btn btn-success" type="button" id="adicionar-musica-button">Adicionar Música <i class="fas fa-plus"></i></button>
+            <button class="btn btn-success" type="button" id="adicionar-musica-button" ng-click="controller.openManageSongModal()">Adicionar Música <i class="fas fa-plus"></i></button>
         </div>
     </div>
 
@@ -37,22 +37,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="musica in controller.musicas">
-                        <td class="hidden-xs hidden-sm hidden-md hidden-lg musica-id">{{musica.id}}</td>
-                        <td>{{musica.nome}}</td>
-                        <td class="hidden-xs hidden-sm">{{musica.autor}}</td>
-                        <td class="hidden-xs hidden-sm">{{musica.pagina}}</td>
-                        <td class="hidden-xs hidden-sm">{{musica.edicao}}</td>l
+                    <tr ng-repeat="song in controller.songs">
+                        <td class="hidden-xs hidden-sm hidden-md hidden-lg musica-id">{{song.id}}</td>
+                        <td>{{song.nome}}</td>
+                        <td class="hidden-xs hidden-sm">{{song.autor}}</td>
+                        <td class="hidden-xs hidden-sm">{{song.pagina}}</td>
+                        <td class="hidden-xs hidden-sm">{{song.edicao}}</td>
                         <td>
-                            <button class="btn btn-sm btn-dark editar-musica-button"><i class="fas fa-pencil-alt"></i></button>
-                            <button class="btn btn-sm btn-danger remover-musica-button"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-sm btn-dark" ng-click="controller.openManageSongModal(song)"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-sm btn-danger" ng-click="controller.remove(song.id)"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="4">Não há músicas registradas</td>
+                    <tr ng-show="controller.songs == null || controller.songs.length == 0">
+                        <td colspan="5">Não há músicas registradas</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <partial name="_ManageSongModal" />
 </div>

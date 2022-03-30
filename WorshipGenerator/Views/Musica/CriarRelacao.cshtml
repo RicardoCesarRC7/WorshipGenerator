@@ -12,7 +12,7 @@
     </div>
 </section>
 
-<div class="container">
+<div class="container" ng-controller="RelacoesMusicaisController as controller" ng-init="controller.init()">
     <div class="mt-5"></div>
 
     <div class="col-12">
@@ -25,22 +25,60 @@
         <div class="row">
             <div class="col-6">
                 <label class="control-label">De:</label>
-                <input class="form-control" type="text" id="de-relacao" />
+                <input class="form-control" type="text" ng-model="controller.from" />
             </div>
             <div class="col-6">
                 <label class="control-label">Até:</label>
-                <input class="form-control" type="text" id="ate-relacao" />
+                <input class="form-control" type="text" ng-model="controller.to" />
             </div>
         </div>
         <div class="mt-3"></div>
         <div class="row">
             <div class="col-12 text-right">
-                <button type="button" class="btn btn-outline-success" id="confirmar-datas-relacao-musicas">Confirmar datas <i class="fas fa-check"></i></button>
+                <button type="button" class="btn btn-outline-success" id="confirmar-datas-relacao-musicas" ng-click="controller.getConfirmDates()">Confirmar datas <i class="fas fa-check"></i></button>
                 <hr />
             </div>
         </div>
 
         <div class="mt-3"></div>
-        <section id="itens-relacao-musicas"></section>
+        <section id="itens-relacao-musicas" ng-show="controller.sundays.length > 0">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Relação de Músicas</h3>
+                    <hr />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card relacao-musical">
+                        <div class="card-header">
+                            <h5 class="card-title">Domingo <span class="data-relacao-musical"></span></h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row musica-relacao-row">
+                                <div class="col-10">
+                                    <select class="form-control musica-relacao-select">
+                                        <option class="" value="">Selecione a música...</option>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-dark btn-sm adicionar-linha-musica"><i class="fas fa-plus"></i></button>
+                                    <button class="btn btn-danger btn-sm remover-linha-musica"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3"></div>
+
+
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-success" id="adicionar-relacao-button">Adicionar Relação <i class="fas fa-check"></i></button>
+                </div>
+            </div>
+
+        </section>
     </div>
 </div>

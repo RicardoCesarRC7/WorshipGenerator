@@ -1,4 +1,4 @@
-﻿<div class="modal fade" id="adicionar-musica-modal" tabindex="-1" role="dialog" aria-labelledby="adicionar-musica-modal" aria-hidden="true">
+﻿<div class="modal fade" id="manage-song-modal" tabindex="-1" role="dialog" aria-labelledby="manage-song-modal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,33 +11,34 @@
                 <div class="row">
                     <div class="col-12 col-md-8">
                         <label class="control-label">Nome</label>
-                        <input type="text" class="form-control" id="nome-musica" placeholder="Insira o nome da música" />
+                        <input type="text" class="form-control" id="nome-musica" placeholder="Insira o nome da música" ng-model="controller.song.nome" ng-change="controller.validate()" />
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="control-label">Fonte</label>
-                        <select class="form-control" id="fonte-musica">
+                        <select class="form-control" id="fonte-musica" ng-model="controller.song.fonte.id">
                             <option value="" disabled="disabled" selected="selected">Selecione a fonte</option>
+                            <option ng-repeat="source in controller.musicalSources" value="{{source.id}}">{{source.nome}}</option>
                         </select>
                     </div>
                     <div class="col-12 mt-3"></div>
                     <div class="col-12 col-md-4">
                         <label class="control-label">Autor</label>
-                        <input type="text" class="form-control" id="autor-musica" placeholder="Insira o autor da música" />
+                        <input type="text" class="form-control" id="autor-musica" placeholder="Insira o autor da música" ng-model="controller.song.autor" />
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="control-label">Página</label>
-                        <input type="number" class="form-control" id="pagina-musica" placeholder="Insira a página da música" />
+                        <input type="number" class="form-control" id="pagina-musica" placeholder="Insira a página da música" ng-model="controller.song.pagina" />
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="control-label">Edição <i class="fas fa-info-circle" data-toggle="tooltip" title="Edição do livro na qual a música está incluída"></i></label>
-                        <input type="number" class="form-control" id="edicao-musica" value="1" placeholder="Insira a edição" />
+                        <input type="number" class="form-control" id="edicao-musica" value="1" placeholder="Insira a edição" ng-model="controller.song.edicao" />
                     </div>
                     <input id="id-musica" value="" style="display: none" />
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button class="btn btn-success" id="adicionar-editar-musica-button">Salvar</button>
+                <button class="btn btn-success" id="adicionar-editar-musica-button" ng-click="controller.add()">Salvar</button>
             </div>
         </div>
     </div>
