@@ -111,7 +111,7 @@ body {
 
 @media screen and (min-width: 1200px) {
 
-    td.hidden-lg {
+    td.hidden-lg, th.hidden-lg {
         display: none;
     }
 }
