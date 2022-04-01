@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WorshipGenerator.Models;
+using WorshipGenerator.Models.Enums;
 using WorshipGenerator.Models.Repositories.Musica;
 
 namespace WorshipGenerator.Controllers
@@ -63,21 +64,31 @@ namespace WorshipGenerator.Controllers
         }
 
         [HttpPost]
-        public IActionResult CarregarItensRelacao(string deRequest, string ateRequest)
+        public IActionResult CarregarItensRelacao(string from, string to)
         {
-            List<DateTime> domingos = new List<DateTime>();
+            List<RelacaoPeriodica> relacoesDomingos = new List<RelacaoPeriodica>();
 
-            if (!string.IsNullOrEmpty(deRequest) && !string.IsNullOrEmpty(deRequest))
+            if (!string.IsNullOrEmpty(from) && !string.IsNullOrEmpty(to))
             {
                 try
                 {
-                    DateTime dataAtual = Convert.ToDateTime(deRequest);
-                    DateTime ate = Convert.ToDateTime(ateRequest);
+                    DateTime dataAtual = Convert.ToDateTime(from);
+                    DateTime ate = Convert.ToDateTime(to);
 
                     while (dataAtual <= ate)
                     {
                         if (dataAtual.DayOfWeek == DayOfWeek.Sunday)
-                            domingos.Add(dataAtual);
+                        {
+                            RelacaoPeriodica relacao = new RelacaoPeriodica {
+
+                                Tipo = ERelacaoTipo.MUSICAL,
+                                De = dataAtual,
+                                Ate = ate,
+                                RelacoesMusicais = new List<RelacaoMusical>() { new RelacaoMusical() }
+                            };
+
+                            relacoesDomingos.Add(relacao);
+                        }
 
                         dataAtual = dataAtual.AddDays(1);
                     }
@@ -88,7 +99,7 @@ namespace WorshipGenerator.Controllers
                 }
             }
 
-            return Json(domingos);
+            return Json(relacoesDomingos);
         }
 
         [HttpGet]

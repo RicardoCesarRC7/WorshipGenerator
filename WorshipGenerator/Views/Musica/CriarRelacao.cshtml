@@ -41,7 +41,7 @@
         </div>
 
         <div class="mt-3"></div>
-        <section id="itens-relacao-musicas" ng-show="controller.sundays.length > 0">
+        <section id="itens-relacao-musicas" ng-show="controller.musicSet != null">
             <div class="row">
                 <div class="col-12">
                     <h3>Relação de Músicas</h3>
@@ -49,16 +49,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 mb-2" ng-repeat="item in controller.musicSet">
                     <div class="card relacao-musical">
                         <div class="card-header">
                             <h5 class="card-title">Domingo <span class="data-relacao-musical"></span></h5>
                         </div>
                         <div class="card-body">
-                            <div class="row musica-relacao-row">
+                            <div class="row musica-relacao-row" ng-repeat="songItem in item.relacoesMusicais">
                                 <div class="col-10">
-                                    <select class="form-control musica-relacao-select">
+                                    <select class="form-control select2" ng-model="item.song">
                                         <option class="" value="">Selecione a música...</option>
+                                        <option class="" ng-repeat="song in controller.songs" value="{{song.id}}">{{song.nome}} ({{song.autor}}) p. {{song.pagina}} {{song.edicao}}º edição</option>
                                     </select>
                                 </div>
                                 <div class="col-2">
