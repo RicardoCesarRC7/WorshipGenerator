@@ -298,7 +298,7 @@ namespace WorshipGenerator.Models.Repositories.Musica
                 {
                     foreach (var item in newSongs)
                     {
-                        await _firebaseClient.Child("Songs").PostAsync<Song>(item);
+                        await _firebaseClient.Child("Songs").PostAsync(item);
                     }
                 }
             }
