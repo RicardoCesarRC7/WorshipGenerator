@@ -52,20 +52,23 @@
                 <div class="col-12 mb-2" ng-repeat="item in controller.musicSet">
                     <div class="card relacao-musical">
                         <div class="card-header">
-                            <h5 class="card-title">Domingo <span class="data-relacao-musical"></span></h5>
+                            <h5 class="card-title">Domingo <span class="data-relacao-musical">{{item.date}}</span></h5>
                         </div>
                         <div class="card-body">
-                            <div class="row musica-relacao-row" ng-repeat="songItem in item.relacoesMusicais">
-                                <div class="col-10">
-                                    <select class="form-control select2" ng-model="item.song">
-                                        <option class="" value="">Selecione a música...</option>
-                                        <option class="" ng-repeat="song in controller.songs" value="{{song.id}}">{{song.nome}} ({{song.autor}}) p. {{song.pagina}} {{song.edicao}}º edição</option>
-                                    </select>
+                            <div class="musica-relacao-row" ng-repeat="songItem in item.songs">
+                                <div class="row mb-2">
+                                    <div class="col-10">
+                                        <select class="form-control select2" ng-model="songItem.id">
+                                            <option class="" value="">Selecione a música...</option>
+                                            <option class="" ng-repeat="song in controller.songs" value="{{song.id}}">{{song.name}} ({{song.author}}) p. {{song.page}} {{song.edition}}º edição</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <button class="btn btn-dark btn-sm adicionar-linha-musica" ng-click="controller.addSong(item)"><i class="fas fa-plus"></i></button>
+                                        <button class="btn btn-danger btn-sm remover-linha-musica" ng-click="controller.removeSong(item, songItem)"><i class="fas fa-minus"></i></button>
+                                    </div>
                                 </div>
-                                <div class="col-2">
-                                    <button class="btn btn-dark btn-sm adicionar-linha-musica"><i class="fas fa-plus"></i></button>
-                                    <button class="btn btn-danger btn-sm remover-linha-musica"><i class="fas fa-minus"></i></button>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -76,7 +79,7 @@
 
             <div class="row">
                 <div class="col-12 text-center">
-                    <button class="btn btn-success" id="adicionar-relacao-button">Adicionar Relação <i class="fas fa-check"></i></button>
+                    <button class="btn btn-success" id="adicionar-relacao-button" ng-click="controller.add()">Adicionar Relação <i class="fas fa-check"></i></button>
                 </div>
             </div>
 

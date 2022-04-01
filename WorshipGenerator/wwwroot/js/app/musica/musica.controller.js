@@ -4,10 +4,12 @@
 
         self = this;
 
-        self.song = { id: '', nome: '', autor: '', pagina: 0, edicao: 1, fonte: null, isValid: false };
+        self.song = { id: '', name: '', author: '', page: 0, edition: 1, source: null, isValid: false };
 
         self.songs = [];
         self.musicalSources = [];
+
+        self.isEdit = false;
 
         self.init = () => {
 
@@ -22,8 +24,10 @@
                 url: getAppRoot() + 'Musica/ListarMusicas'
             }).then(function success(response) {
 
-                if (response.data != null && response.data.$values.length > 0)
-                    self.songs = response.data.$values;
+                console.log(response.data)
+
+                if (response.data != null && response.data.length > 0)
+                    self.songs = response.data;
             });
         }
 
@@ -71,7 +75,7 @@
 
                 $http({
                     method: 'POST',
-                    url: getAppRoot() + 'Musica/ListarMusicas',
+                    url: getAppRoot() + 'Musica/EditarMusica',
                     data: self.song
                 }).then(function success(response) {
 
@@ -135,16 +139,21 @@
 
             self.song.isValid = true;
 
-            if (!self.song.nome || !self.song.autor || !self.song.pagina || !self.edicao || !self.song.fonte)
+            if (!self.song.name || !self.song.author || !self.song.page || !self.song.edition || !self.song.source)
                 self.song.isValid = false;
         }
 
         self.openManageSongModal = (song) => {
 
-            self.song = { id: '', nome: '', autor: '', pagina: 0, edicao: 1, fonte: null, isValid: false };
+            self.song = { id: '', name: '', author: '', page: 0, edition: 1, source: null, isValid: false };
+            self.isEdit = false;
 
-            if (song)
+            if (song) {
+
+                self.isEdit = true;
+
                 self.song = song;
+            }
 
             $('#manage-song-modal').modal('toggle');
         }
@@ -156,8 +165,8 @@
                 url: getAppRoot() + 'Musica/ListarFontesMusicais'
             }).then(function success(response) {
 
-                if (response.data != null && response.data.$values.length > 0)
-                    self.musicalSources = response.data.$values;
+                if (response.data != null && response.data.length > 0)
+                    self.musicalSources = response.data;
             });
         }
     }]);

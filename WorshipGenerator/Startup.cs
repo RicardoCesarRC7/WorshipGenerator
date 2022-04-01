@@ -27,7 +27,7 @@ namespace WorshipGenerator
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            services.AddControllersWithViews();
 
             services.AddScoped<IProgramacaoRepository, ProgramacaoRepository>();
             services.AddScoped<IMusicaRepository, MusicaRepository>();

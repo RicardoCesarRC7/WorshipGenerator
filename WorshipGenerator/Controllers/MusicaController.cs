@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WorshipGenerator.Models;
+using WorshipGenerator.Models.Base;
 using WorshipGenerator.Models.Enums;
 using WorshipGenerator.Models.Repositories.Musica;
 
@@ -33,28 +34,24 @@ namespace WorshipGenerator.Controllers
 
         public async Task<IActionResult> DetalhesRelacao(string id)
         {
-            var relacaoMusical = await _musicaRepository.BuscarRelacao(id);
-
-            return View(relacaoMusical);
+            return View();
         }
 
         public async Task<IActionResult> Gerenciar()
         {
-            var musicas = await _musicaRepository.Listar();
-
-            return View(musicas);
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdicionarMusica(Musica musica)
+        public async Task<IActionResult> AdicionarMusica(Song request)
         {
-            return Json(await _musicaRepository.Adicionar(musica));
+            return Json(await _musicaRepository.Adicionar(request));
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditarMusica(Musica musica)
+        public async Task<IActionResult> EditarMusica(Song request)
         {
-            return Json(await _musicaRepository.Editar(musica));
+            return Json(await _musicaRepository.Editar(request));
         }
 
         [HttpPost]
@@ -66,7 +63,7 @@ namespace WorshipGenerator.Controllers
         [HttpPost]
         public IActionResult CarregarItensRelacao(string from, string to)
         {
-            List<RelacaoPeriodica> relacoesDomingos = new List<RelacaoPeriodica>();
+            BaseResult result = new BaseResult();
 
             if (!string.IsNullOrEmpty(from) && !string.IsNullOrEmpty(to))
             {
@@ -75,31 +72,42 @@ namespace WorshipGenerator.Controllers
                     DateTime dataAtual = Convert.ToDateTime(from);
                     DateTime ate = Convert.ToDateTime(to);
 
+                    PeriodicSet relacao = new PeriodicSet
+                    { 
+                        Type = ESetType.MUSIC,
+                        From = dataAtual,
+                        To = ate,
+                        MusicSet = new List<MusicSet>()
+                    };
+
                     while (dataAtual <= ate)
                     {
                         if (dataAtual.DayOfWeek == DayOfWeek.Sunday)
                         {
-                            RelacaoPeriodica relacao = new RelacaoPeriodica {
-
-                                Tipo = ERelacaoTipo.MUSICAL,
-                                De = dataAtual,
-                                Ate = ate,
-                                RelacoesMusicais = new List<RelacaoMusical>() { new RelacaoMusical() }
+                            MusicSet relacaoMusical = new MusicSet
+                            { 
+                                Date = dataAtual,
+                                Songs = new List<Song>() { new Song() }
                             };
 
-                            relacoesDomingos.Add(relacao);
+                            relacao.MusicSet.Add(relacaoMusical);
                         }
 
                         dataAtual = dataAtual.AddDays(1);
                     }
+
+                    result.Success = true;
+                    result.Content = relacao;
                 }
                 catch (Exception e)
                 {
                     _logger.LogInformation("Erro carregando itens de relacao musical: " + e.Message, e);
+
+                    result.Success = false;
                 }
             }
 
-            return Json(relacoesDomingos);
+            return Json(result);
         }
 
         [HttpGet]
@@ -115,7 +123,7 @@ namespace WorshipGenerator.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdicionarRelacaoMusical(RelacaoPeriodica request)
+        public async Task<IActionResult> AdicionarRelacaoMusical(PeriodicSet request)
         {
             return Json(await _musicaRepository.AdicionarRelacao(request));
         }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WorshipGenerator.Models
 {
-    public class RelacaoMusical
+    public class MusicSet
     {
-        public DateTime Data { get; set; }
-        public List<Musica> Musicas { get; set; }
+        public DateTime Date { get; set; }
+        public List<Song> Songs { get; set; }
     }
 }

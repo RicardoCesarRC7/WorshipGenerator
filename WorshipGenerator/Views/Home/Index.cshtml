@@ -42,7 +42,9 @@
 </div>
 <div class="bg-white">
     <div class="container container-fluid">
-        <section id="ultimas-relacoes-musicais-section" class="p-5"></section>
+        <section id="ultimas-relacoes-musicais-section" class="p-5" ng-controller="RelacoesMusicaisController as controller" ng-init="controller.init()">
+            <partial name="_ListaRelacoesMusicais" />
+        </section>
     </div>
 </div>
 

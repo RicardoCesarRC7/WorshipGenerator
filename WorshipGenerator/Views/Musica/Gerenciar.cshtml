@@ -1,6 +1,4 @@
-﻿@model List<Musica>
-
-<section id="mainCarouselSection">
+﻿<section id="mainCarouselSection">
     <div id="mainCarousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -39,10 +37,10 @@
                 <tbody>
                     <tr ng-repeat="song in controller.songs">
                         <td class="hidden-xs hidden-sm hidden-md hidden-lg musica-id">{{song.id}}</td>
-                        <td>{{song.nome}}</td>
-                        <td class="hidden-xs hidden-sm">{{song.autor}}</td>
-                        <td class="hidden-xs hidden-sm">{{song.pagina}}</td>
-                        <td class="hidden-xs hidden-sm">{{song.edicao}}</td>
+                        <td>{{song.name}}</td>
+                        <td class="hidden-xs hidden-sm">{{song.author}}</td>
+                        <td class="hidden-xs hidden-sm">{{song.page}}</td>
+                        <td class="hidden-xs hidden-sm">{{song.edition}}</td>
                         <td>
                             <button class="btn btn-sm btn-dark" ng-click="controller.openManageSongModal(song)"><i class="fas fa-pencil-alt"></i></button>
                             <button class="btn btn-sm btn-danger" ng-click="controller.remove(song.id)"><i class="fas fa-trash"></i></button>

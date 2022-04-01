@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace WorshipGenerator.Models.Enums
 {
-    public enum ERelacaoTipo
+    public enum ESetType
     {
-        MUSICAL = 1
+        MUSIC = 1
     }
 }

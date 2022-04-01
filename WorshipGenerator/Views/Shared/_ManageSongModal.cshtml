@@ -11,34 +11,34 @@
                 <div class="row">
                     <div class="col-12 col-md-8">
                         <label class="control-label">Nome</label>
-                        <input type="text" class="form-control" id="nome-musica" placeholder="Insira o nome da música" ng-model="controller.song.nome" ng-change="controller.validate()" />
+                        <input type="text" class="form-control" id="nome-musica" placeholder="Insira o nome da música" ng-model="controller.song.name" ng-change="controller.validate()" />
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="control-label">Fonte</label>
-                        <select class="form-control" id="fonte-musica" ng-model="controller.song.fonte.id">
+                        <select class="form-control" id="fonte-musica" ng-model="controller.song.source.id">
                             <option value="" disabled="disabled" selected="selected">Selecione a fonte</option>
-                            <option ng-repeat="source in controller.musicalSources" value="{{source.id}}">{{source.nome}}</option>
+                            <option ng-repeat="source in controller.musicalSources" value="{{source.id}}">{{source.name}}</option>
                         </select>
                     </div>
                     <div class="col-12 mt-3"></div>
                     <div class="col-12 col-md-4">
                         <label class="control-label">Autor</label>
-                        <input type="text" class="form-control" id="autor-musica" placeholder="Insira o autor da música" ng-model="controller.song.autor" />
+                        <input type="text" class="form-control" id="autor-musica" placeholder="Insira o autor da música" ng-model="controller.song.author" />
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="control-label">Página</label>
-                        <input type="number" class="form-control" id="pagina-musica" placeholder="Insira a página da música" ng-model="controller.song.pagina" />
+                        <input type="number" class="form-control" id="pagina-musica" placeholder="Insira a página da música" ng-model="controller.song.page" />
                     </div>
                     <div class="col-12 col-md-4">
                         <label class="control-label">Edição <i class="fas fa-info-circle" data-toggle="tooltip" title="Edição do livro na qual a música está incluída"></i></label>
-                        <input type="number" class="form-control" id="edicao-musica" value="1" placeholder="Insira a edição" ng-model="controller.song.edicao" />
+                        <input type="number" class="form-control" id="edicao-musica" value="1" placeholder="Insira a edição" ng-model="controller.song.edition" />
                     </div>
                     <input id="id-musica" value="" style="display: none" />
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button class="btn btn-success" id="adicionar-editar-musica-button" ng-click="controller.add()">Salvar</button>
+                <button class="btn btn-success" id="adicionar-editar-musica-button" ng-click="!controller.isEdit ? controller.add() : controller.edit()">Salvar</button>
             </div>
         </div>
     </div>

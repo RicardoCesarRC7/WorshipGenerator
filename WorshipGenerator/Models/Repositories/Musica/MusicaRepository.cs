@@ -18,6 +18,10 @@ namespace WorshipGenerator.Models.Repositories.Musica
         private readonly FirebaseClient _firebaseClient;
         private readonly IConfiguration _configuration;
 
+        private readonly string _songsIndexDatabase;
+        private readonly string _sourcesIndexDatabase;
+        private readonly string _musicSetsIndexDatabase;
+
         public MusicaRepository(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -27,19 +31,23 @@ namespace WorshipGenerator.Models.Repositories.Musica
                 _firebaseUrl = configuration["firebaseMainUrl"];
 
                 _firebaseClient = new FirebaseClient(_firebaseUrl);
+
+                _songsIndexDatabase = configuration["songsIndexDatabase"];
+                _sourcesIndexDatabase = configuration["sourcesIndexDatabase"];
+                _musicSetsIndexDatabase = configuration["musicSetsIndexDatabase"];
             }
         }
 
-        public async Task<BaseResult> Adicionar(Models.Musica musica)
+        public async Task<BaseResult> Adicionar(Song musica)
         {
             BaseResult result = new BaseResult();
 
-            if (musica != null && !string.IsNullOrEmpty(musica.Nome))
+            if (musica != null && !string.IsNullOrEmpty(musica.Name))
             {
-                if (musica.Fonte != null && !string.IsNullOrEmpty(musica.Fonte.Id))
-                    musica.Fonte = await BuscarFonte(musica.Fonte.Id);
+                if (musica.Source != null && !string.IsNullOrEmpty(musica.Source.Id))
+                    musica.Source = await BuscarFonte(musica.Source.Id);
 
-                await _firebaseClient.Child("Musicas").PostAsync(JsonConvert.SerializeObject(musica));
+                await _firebaseClient.Child(_songsIndexDatabase).PostAsync(JsonConvert.SerializeObject(musica));
 
                 result.Success = true;
             }
@@ -47,16 +55,16 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return result;
         }
 
-        public async Task<BaseResult> Editar(Models.Musica musica)
+        public async Task<BaseResult> Editar(Song request)
         {
             BaseResult result = new BaseResult();
 
-            if (musica != null)
+            if (request != null)
             {
-                if (!string.IsNullOrEmpty(musica.Fonte.Id))
-                    musica.Fonte = await BuscarFonte(musica.Fonte.Id);
+                if (!string.IsNullOrEmpty(request.Source.Id))
+                    request.Source = await BuscarFonte(request.Source.Id);
 
-                await _firebaseClient.Child("Musicas").Child(musica.Id).PutAsync(JsonConvert.SerializeObject(musica));
+                await _firebaseClient.Child(_songsIndexDatabase).Child(request.Id).PutAsync(JsonConvert.SerializeObject(request));
 
                 result.Success = true;
             }
@@ -64,13 +72,13 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return result;
         }
 
-        public async Task<Models.Musica> Buscar(string id)
+        public async Task<Song> Buscar(string id)
         {
-            Models.Musica musica = null;
+            Song musica = null;
 
             if (!string.IsNullOrEmpty(id))
             {
-                musica = await _firebaseClient.Child("Musicas").Child(id).OnceSingleAsync<Models.Musica>();
+                musica = await _firebaseClient.Child(_songsIndexDatabase).Child(id).OnceSingleAsync<Models.Song>();
 
                 musica.Id = id;
             }
@@ -86,7 +94,7 @@ namespace WorshipGenerator.Models.Repositories.Musica
             {
                 try
                 {
-                    await _firebaseClient.Child("Musicas").Child(id).DeleteAsync();
+                    await _firebaseClient.Child(_songsIndexDatabase).Child(id).DeleteAsync();
 
                     result.Success = true;
                 }
@@ -99,17 +107,17 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return result;
         }
 
-        public async Task<List<Models.Musica>> Listar()
+        public async Task<List<Song>> Listar()
         {
-            List<Models.Musica> musicas = new List<Models.Musica>();
+            List<Song> musicas = new List<Song>();
 
-            var result = await _firebaseClient.Child("Musicas").OnceAsync<Models.Musica>();
+            var result = await _firebaseClient.Child(_songsIndexDatabase).OnceAsync<Song>();
 
             if (result != null && result.Count > 0)
             {
                 foreach (var item in result)
                 {
-                    Models.Musica musica = item.Object;
+                    Song musica = item.Object;
 
                     musica.Id = item.Key;
 
@@ -120,19 +128,19 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return musicas;
         }
 
-        public async Task<List<FonteMusical>> ListarFontes()
+        public async Task<List<Source>> ListarFontes()
         {
-            List<FonteMusical> fontes = new List<FonteMusical>();
+            List<Source> fontes = new List<Source>();
 
             try
             {
-                var result = await _firebaseClient.Child("FontesMusicais").OnceAsync<FonteMusical>();
+                var result = await _firebaseClient.Child(_sourcesIndexDatabase).OnceAsync<Source>();
 
                 if (result != null && result.Count > 0)
                 {
                     foreach (var item in result)
                     {
-                        FonteMusical fonte = item.Object;
+                        Source fonte = item.Object;
 
                         fonte.Id = item.Key;
 
@@ -148,13 +156,13 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return fontes;
         }
 
-        public async Task<FonteMusical> BuscarFonte(string id)
+        public async Task<Source> BuscarFonte(string id)
         {
-            FonteMusical fonte = null;
+            Source fonte = null;
 
             if (!string.IsNullOrEmpty(id))
             {
-                fonte = await _firebaseClient.Child("FontesMusicais").Child(id).OnceSingleAsync<FonteMusical>();
+                fonte = await _firebaseClient.Child(_sourcesIndexDatabase).Child(id).OnceSingleAsync<Source>();
 
                 fonte.Id = id;
             }
@@ -162,7 +170,7 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return fonte;
         }
 
-        public async Task<BaseResult> AdicionarRelacao(RelacaoPeriodica request)
+        public async Task<BaseResult> AdicionarRelacao(PeriodicSet request)
         {
             BaseResult result = new BaseResult();
 
@@ -170,7 +178,9 @@ namespace WorshipGenerator.Models.Repositories.Musica
             {
                 try
                 {
-                    await _firebaseClient.Child("RelacoesMusicais").PostAsync(JsonConvert.SerializeObject(request));
+                    request.IssueDate = DateTime.Now;
+
+                    await _firebaseClient.Child(_musicSetsIndexDatabase).PostAsync(JsonConvert.SerializeObject(request));
 
                     result.Success = true;
                 }
@@ -183,28 +193,28 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return result;
         }
 
-        public async Task<RelacaoPeriodica> BuscarRelacao(string id)
+        public async Task<PeriodicSet> BuscarRelacao(string id)
         {
-            RelacaoPeriodica relacao = null;
+            PeriodicSet relacao = null;
 
             if (!string.IsNullOrEmpty(id))
             {
-                relacao = await _firebaseClient.Child("RelacoesMusicais").Child(id).OnceSingleAsync<RelacaoPeriodica>();
+                relacao = await _firebaseClient.Child(_musicSetsIndexDatabase).Child(id).OnceSingleAsync<PeriodicSet>();
 
-                if (relacao != null && relacao.RelacoesMusicais != null && relacao.RelacoesMusicais.Count > 0)
+                if (relacao != null && relacao.MusicSet != null && relacao.MusicSet.Count > 0)
                 {
-                    foreach (var relacaoMusical in relacao.RelacoesMusicais)
+                    foreach (var relacaoMusical in relacao.MusicSet)
                     {
-                        if (relacaoMusical.Musicas != null && relacaoMusical.Musicas.Count > 0)
+                        if (relacaoMusical.Songs != null && relacaoMusical.Songs.Count > 0)
                         {
-                            foreach (var musica in relacaoMusical.Musicas)
+                            foreach (var musica in relacaoMusical.Songs)
                             {
                                 var result = await Buscar(musica.Id);
 
-                                musica.Nome = result.Nome;
-                                musica.Autor = result.Autor;
-                                musica.Pagina = result.Pagina;
-                                musica.Edicao = result.Edicao;
+                                musica.Name = result.Name;
+                                musica.Author = result.Author;
+                                musica.Page = result.Page;
+                                musica.Edition = result.Edition;
                             }
                         }
                     }
@@ -214,21 +224,21 @@ namespace WorshipGenerator.Models.Repositories.Musica
             return relacao;
         }
 
-        public async Task<List<RelacaoPeriodica>> ListarRelacoes()
+        public async Task<List<PeriodicSet>> ListarRelacoes()
         {
-            var result = new List<RelacaoPeriodica>();
+            var result = new List<PeriodicSet>();
 
             try
             {
-                var relacoes = await _firebaseClient.Child("RelacoesMusicais").OnceAsync<RelacaoPeriodica>();
+                var relacoes = await _firebaseClient.Child(_musicSetsIndexDatabase).OnceAsync<PeriodicSet>();
 
                 if (relacoes != null && relacoes.Count > 0)
                 {
                     foreach (var relacao in relacoes)
                     {
-                        RelacaoPeriodica relacaoPeriodica = relacao.Object;
+                        PeriodicSet relacaoPeriodica = relacao.Object;
 
-                        relacaoPeriodica.Tipo = ERelacaoTipo.MUSICAL;
+                        relacaoPeriodica.Type = ESetType.MUSIC;
                         relacaoPeriodica.Id = relacao.Key;
 
                         result.Add(relacaoPeriodica);
@@ -244,15 +254,54 @@ namespace WorshipGenerator.Models.Repositories.Musica
 
         public async Task<bool> InserirFontesMusicais()
         {
-            var fontes = new List<FonteMusical>
+            var fontes = new List<Source>
             {
-                new FonteMusical { Nome = "Cifras IBET 1º Edição" },
-                new FonteMusical { Nome = "Cantor Cristão" },
-                new FonteMusical { Nome = "Voz de Melodia" }
+                new Source { Name = "Cifras IBET 1º Edição", Type = ESourceType.MUSIC },
+                new Source { Name = "Cantor Cristão", Type = ESourceType.MUSIC },
+                new Source { Name = "Voz de Melodia", Type = ESourceType.MUSIC }
             };
 
             foreach (var item in fontes)
-                await _firebaseClient.Child("FontesMusicais").PostAsync(item);
+                await _firebaseClient.Child(_sourcesIndexDatabase).PostAsync(item);
+
+            return true;
+        }
+
+        public async Task<bool> InserirMusicas()
+        {
+            var currentSongs = await _firebaseClient.Child("Musicas").OnceAsync<Models.Musica>();
+
+            if (currentSongs != null && currentSongs.Count > 0)
+            {
+                var newSongs = new List<Song>();
+
+                foreach (var song in currentSongs)
+                {
+                    var songToAdd = new Song
+                    {
+                        Name = song.Object.Nome,
+                        Source = new Source 
+                        {
+                            Id = song.Object.Fonte != null ? song.Object.Fonte.Id : string.Empty,
+                            Name = song.Object.Fonte != null ? song.Object.Fonte.Nome : string.Empty,
+                            Type = ESourceType.MUSIC
+                        },
+                        Author = song.Object.Autor,
+                        Page = song.Object.Pagina,
+                        Edition = song.Object.Edicao
+                    };
+
+                    newSongs.Add(songToAdd);
+                }
+
+                if (newSongs.Count > 0 && newSongs.Count == currentSongs.Count)
+                {
+                    foreach (var item in newSongs)
+                    {
+                        await _firebaseClient.Child("Songs").PostAsync<Song>(item);
+                    }
+                }
+            }
 
             return true;
         }

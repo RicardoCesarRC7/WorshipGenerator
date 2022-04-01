@@ -12,7 +12,8 @@
             isValid: false
         }
 
-        self.relacoesMusicais = [];
+        self.periodicSetList = [];
+        self.periodicSet = null;
         self.musicSet = [''];
         self.songs = [];
 
@@ -30,8 +31,16 @@
                 url: getAppRoot() + 'Musica/ListarRelacoes'
             }).then(function success(response) {
 
-                if (response.data != null && response.data.$values.length > 0)
-                    self.relacoesMusicais = response.data.$values;
+                if (response.data != null && response.data.length > 0) {
+
+                    self.periodicSetList = response.data;
+
+                    angular.forEach(self.periodicSetList, function (set, index) {
+
+                        set.from = moment(set.from).format('DD/MM/yyyy');
+                        set.to = moment(set.to).format('DD/MM/yyyy');
+                    });
+                }
             });
         }
 
@@ -42,8 +51,8 @@
                 url: getAppRoot() + 'Musica/ListarMusicas'
             }).then(function success(response) {
 
-                if (response.data != null && response.data.$values.length > 0)
-                    self.songs = response.data.$values;
+                if (response.data != null && response.data.length > 0)
+                    self.songs = response.data;
             });
         }
 
@@ -57,9 +66,17 @@
                     data: { from: self.from, to: self.to }
                 }).then(function success(response) {
 
-                    if (response.data.$values != null && response.data.$values.length > 0) {
+                    console.log(response);
 
-                        self.musicSet = response.data.$values;
+                    if (response.data != null && response.data.success) {
+
+                        self.periodicSet = response.data.content;
+                        self.musicSet = response.data.content.musicSet;
+
+                        angular.forEach(self.musicSet, function (set, index) {
+
+                            set.date = moment(set.date).format('DD/MM/yyyy');
+                        });
                     }
                 });
             }
@@ -67,22 +84,24 @@
 
         self.add = () => {
 
-            if (self.relacaoMusical.isValid) {
+            if (true) {
+
+                self.periodicSet.relacoesMusicais = self.musicSet;
 
                 showLoader('Estamos inserindo as informações da Música...');
 
                 $http({
                     method: 'POST',
                     url: getAppRoot() + 'Musica/AdicionarRelacaoMusical',
-                    data: self.song
+                    data: self.periodicSet
                 }).then(function success(response) {
 
                     if (response.data != null && response.data.success) {
 
                         Swal.fire({
                             icon: 'success',
-                            title: 'Música Adicionada!',
-                            text: 'A música foi adicionada com sucesso.'
+                            title: 'Relação Musical Adicionada!',
+                            text: 'A relação foi adicionada com sucesso.'
                         }).then(() => self.list());
 
                     } else {
@@ -105,6 +124,17 @@
         self.remove = () => {
 
 
+        }
+
+        self.addSong = (set) => {
+
+            set.songs.push({ id: '' });
+        }
+
+        self.removeSong = (set, song) => {
+
+            if (set.songs.length > 1)
+                set.songs.splice(set.songs.indexOf(song), 1);
         }
 
         self.initSelect2 = () => $('.musica-relacao-select').select2();

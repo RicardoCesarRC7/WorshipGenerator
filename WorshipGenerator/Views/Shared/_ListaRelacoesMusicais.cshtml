@@ -1,6 +1,4 @@
-﻿@model List<RelacaoPeriodica>
-
-<div class="row text-center">
+﻿<div class="row text-center">
     <h1 class="text-uppercase">Últimas Relações Musicais</h1>
 </div>
 <div class="mt-5"></div>
@@ -15,25 +13,19 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model != null && Model.Count > 0)
-                {
-                    foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>De @item.De.ToShortDateString() até @item.Ate.ToShortDateString()</td>
-                            <td>@item.Autor</td>
-                            <td>
-                                <a class="btn btn-sm btn-default ver-detalhes-relacao-musical" href="/Musica/DetalhesRelacao/@item.Id"><i class="fas fa-eye"></i></a>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="4">Não há relações musicais registradas</td>
-                    </tr>
-                }
+
+                <tr ng-repeat="set in controller.periodicSetList" ng-show="controller.periodicSetList.length > 0">
+                    <td>De {{from}} até {{set.to}}</td>
+                    <td>{{set.author}}</td>
+                    <td>
+                        <a class="btn btn-sm btn-default ver-detalhes-relacao-musical" href="/Musica/DetalhesRelacao/{{set.id}}"><i class="fas fa-eye"></i></a>
+                    </td>
+                </tr>
+
+                <tr ng-show="controller.periodicSetList.length == 0">
+                    <td colspan="4">Não há relações musicais registradas</td>
+                </tr>
+
             </tbody>
         </table>
     </div>
