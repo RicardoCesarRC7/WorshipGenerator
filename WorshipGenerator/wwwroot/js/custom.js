@@ -1,7 +1,7 @@
 ﻿$(document).ready(() => {
 
     $(() => $('[data-toggle="tooltip"]').tooltip());
-    $(() => $('select2').select2());
+    $(() => $('.select2').select2());
 
     if (window.location.search == '') {
 

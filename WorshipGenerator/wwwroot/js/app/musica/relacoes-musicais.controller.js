@@ -14,12 +14,12 @@
 
         self.periodicSetList = [];
         self.periodicSet = null;
-        self.musicSet = [''];
+        self.musicSet = [{ date: null, songs: [{}] }];
         self.songs = [];
 
         self.init = () => {
 
-            //self.initSelect2();
+            self.initSelect2();
             self.list();
             self.listSongs();
         }
@@ -77,6 +77,10 @@
 
                             set.date = moment(set.date).format('DD/MM/yyyy');
                         });
+
+                        $('#itens-relacao-musicas').show();
+
+                        self.initSelect2();
                     }
                 });
             }
@@ -137,5 +141,5 @@
                 set.songs.splice(set.songs.indexOf(song), 1);
         }
 
-        self.initSelect2 = () => $('.musica-relacao-select').select2();
+        self.initSelect2 = () => $('.select2').select2();
     }]);
