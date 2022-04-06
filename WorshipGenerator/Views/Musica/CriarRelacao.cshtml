@@ -25,11 +25,11 @@
         <div class="row">
             <div class="col-6">
                 <label class="control-label">De:</label>
-                <input class="form-control" type="text" ng-model="controller.from" />
+                <input class="form-control datepicker" type="text" ng-model="controller.from" />
             </div>
             <div class="col-6">
                 <label class="control-label">Até:</label>
-                <input class="form-control" type="text" ng-model="controller.to" />
+                <input class="form-control datepicker" type="text" ng-model="controller.to" />
             </div>
         </div>
         <div class="mt-3"></div>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="mt-3"></div>
-        <section id="itens-relacao-musicas">
+        <section id="itens-relacao-musicas" ng-show="controller.musicSet.length > 0">
             <div class="row">
                 <div class="col-12">
                     <h3>Relação de Músicas</h3>
@@ -56,19 +56,24 @@
                         </div>
                         <div class="card-body">
                             <div class="musica-relacao-row" ng-repeat="songItem in item.songs">
-                                <div class="row mb-2">
+                                <div class="row mb-2 form-group">
                                     <div class="col-10">
-                                        <select class="form-control select2" ng-model="songItem.id">
-                                            <option class="" value="">Selecione a música...</option>
-                                            <option class="" ng-repeat="song in controller.songs" value="{{song.id}}">{{song.name}} ({{song.author}}) p. {{song.page}} {{song.edition}}º edição</option>
-                                        </select>
+                                        <ui-select theme="selectize"
+                                                   ng-model="songItem.selected"
+                                                   style="width: 100%;"
+                                                   ng-change="controller.selectSong(item)">
+                                            <ui-select-match placeholder="Selecione uma música...">{{$select.selected.name}} ({{$select.selected.author}}) p. {{$select.selected.page}}, {{$select.selected.edition}}° edição</ui-select-match>
+                                            <ui-select-choices repeat="item in controller.songs | filter: $select.search">
+                                                <div ng-bind-html="item.name + ' (' + item.author + ') p. ' + item.page + ', ' + item.edition + '° edição' | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
                                     </div>
                                     <div class="col-2">
                                         <button class="btn btn-dark btn-sm adicionar-linha-musica" ng-click="controller.addSong(item)"><i class="fas fa-plus"></i></button>
                                         <button class="btn btn-danger btn-sm remover-linha-musica" ng-click="controller.removeSong(item, songItem)"><i class="fas fa-minus"></i></button>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>

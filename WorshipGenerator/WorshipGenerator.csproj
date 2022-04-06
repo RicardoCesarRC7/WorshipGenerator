@@ -16,10 +16,12 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\images\carousel\" />
+    <Folder Include="wwwroot\css\plugins\" />
     <Folder Include="wwwroot\js\app\programacao\" />
     <Folder Include="wwwroot\lib\font-awesome\dist\css\" />
     <Folder Include="wwwroot\lib\font-awesome\dist\js\" />
     <Folder Include="wwwroot\lib\font-awesome\dist\webfonts\" />
+    <Folder Include="wwwroot\plugins\" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,15 @@
 ﻿$(document).ready(() => {
 
     $(() => $('[data-toggle="tooltip"]').tooltip());
-    $(() => $('.select2').select2());
+    $(() => $('.datepicker').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        buttonImageOnly: true,
+        nextText: '>',
+        prevText: '<'
+    }));
 
     if (window.location.search == '') {
 

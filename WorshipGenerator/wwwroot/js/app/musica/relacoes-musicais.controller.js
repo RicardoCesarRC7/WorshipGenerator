@@ -14,12 +14,11 @@
 
         self.periodicSetList = [];
         self.periodicSet = null;
-        self.musicSet = [{ date: null, songs: [{}] }];
+        self.musicSet = [];
         self.songs = [];
 
         self.init = () => {
 
-            self.initSelect2();
             self.list();
             self.listSongs();
         }
@@ -53,6 +52,8 @@
 
                 if (response.data != null && response.data.length > 0)
                     self.songs = response.data;
+
+                console.log(self.songs);
             });
         }
 
@@ -80,7 +81,7 @@
 
                         $('#itens-relacao-musicas').show();
 
-                        self.initSelect2();
+                        /*self.initSelect2();*/
                     }
                 });
             }
@@ -141,5 +142,8 @@
                 set.songs.splice(set.songs.indexOf(song), 1);
         }
 
-        self.initSelect2 = () => $('.select2').select2();
+        self.selectSong = (set) => {
+
+            console.log(set);
+        }
     }]);
