@@ -61,7 +61,7 @@
                                         <ui-select theme="selectize"
                                                    ng-model="songItem.selected"
                                                    style="width: 100%;"
-                                                   ng-change="controller.selectSong(item)">
+                                                   ng-change="controller.selectSong(item, songItem)">
                                             <ui-select-match placeholder="Selecione uma música...">{{$select.selected.name}} ({{$select.selected.author}}) p. {{$select.selected.page}}, {{$select.selected.edition}}° edição</ui-select-match>
                                             <ui-select-choices repeat="item in controller.songs | filter: $select.search">
                                                 <div ng-bind-html="item.name + ' (' + item.author + ') p. ' + item.page + ', ' + item.edition + '° edição' | highlight: $select.search"></div>

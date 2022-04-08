@@ -15,7 +15,7 @@
             <tbody>
 
                 <tr ng-repeat="set in controller.periodicSetList" ng-show="controller.periodicSetList.length > 0">
-                    <td>De {{from}} até {{set.to}}</td>
+                    <td>De {{set.from}} até {{set.to}}</td>
                     <td>{{set.author}}</td>
                     <td>
                         <a class="btn btn-sm btn-default ver-detalhes-relacao-musical" href="/Musica/DetalhesRelacao/{{set.id}}"><i class="fas fa-eye"></i></a>

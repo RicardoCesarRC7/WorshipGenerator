@@ -128,6 +128,12 @@ namespace WorshipGenerator.Controllers
             return Json(await _musicaRepository.AdicionarRelacao(request));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> BuscarRelacao(string request)
+        {
+            return Json(await _musicaRepository.BuscarRelacao(request));
+        }
+
         [HttpGet]
         public async Task<IActionResult> ListarRelacoes()
         {

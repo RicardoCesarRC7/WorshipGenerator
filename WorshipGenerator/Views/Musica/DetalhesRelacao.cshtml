@@ -24,24 +24,15 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <label class="control-label">De:</label>
-                <input class="form-control" type="text" ng-model="controller.from" />
+                <strong class="strong">De: {{controller.periodicSet.from}}</strong>
             </div>
             <div class="col-6">
-                <label class="control-label">Até:</label>
-                <input class="form-control" type="text" ng-model="controller.to" />
+                <strong class="strong">Até: {{controller.periodicSet.to}}</strong>
             </div>
         </div>
-        <div class="mt-3"></div>
-        <div class="row">
-            <div class="col-12 text-right">
-                <button type="button" class="btn btn-outline-success" id="confirmar-datas-relacao-musicas" ng-click="controller.getConfirmDates()">Confirmar datas <i class="fas fa-check"></i></button>
-                <hr />
-            </div>
-        </div>
+        <div class="mt-5"></div>
 
-        <div class="mt-3"></div>
-        <section id="itens-relacao-musicas" ng-show="controller.musicSet != null">
+        <section id="itens-relacao-musicas">
             <div class="row">
                 <div class="col-12">
                     <h3>Relação de Músicas</h3>
@@ -49,23 +40,16 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 mb-2" ng-repeat="item in controller.musicSet">
+                <div class="col-12 mb-2" ng-repeat="item in controller.periodicSet.musicSet">
                     <div class="card relacao-musical">
                         <div class="card-header">
-                            <h5 class="card-title">Domingo <span class="data-relacao-musical">{{item.date}}</span></h5>
+                            <h5 class="card-title">Domingo <span class="data-relacao-musical">{{item.date | date: 'dd/MM/yyyy'}}</span></h5>
                         </div>
                         <div class="card-body">
-                            <div class="musica-relacao-row" ng-repeat="songItem in item.songs">
+                            <div class="musica-relacao-row" ng-repeat="song in item.songs">
                                 <div class="row mb-2">
-                                    <div class="col-10">
-                                        <select class="form-control select2" ng-model="songItem.id">
-                                            <option class="" value="">Selecione a música...</option>
-                                            <option class="" ng-repeat="song in controller.songs" value="{{song.id}}">{{song.name}} ({{song.author}}) p. {{song.page}} {{song.edition}}º edição</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-2">
-                                        <button class="btn btn-dark btn-sm adicionar-linha-musica" ng-click="controller.addSong(item)"><i class="fas fa-plus"></i></button>
-                                        <button class="btn btn-danger btn-sm remover-linha-musica" ng-click="controller.removeSong(item, songItem)"><i class="fas fa-minus"></i></button>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control text-center" disabled="disabled" value="{{song.name}} ({{song.author}}) p. {{song.page}}, {{song.edition}}° edição" />
                                     </div>
                                 </div>
 
@@ -77,11 +61,11 @@
             <div class="mt-3"></div>
 
 
-            <div class="row">
+            @*<div class="row">
                 <div class="col-12 text-center">
                     <button class="btn btn-success" id="adicionar-relacao-button" ng-click="controller.add()">Adicionar Relação <i class="fas fa-check"></i></button>
                 </div>
-            </div>
+            </div>*@
 
         </section>
     </div>

@@ -21,6 +21,9 @@
 
             self.list();
             self.listSongs();
+
+            if (window.location.pathname.includes('DetalhesRelacao'))
+                self.get();
         }
 
         self.list = () => {
@@ -43,6 +46,33 @@
             });
         }
 
+        self.get = () => {
+
+            let request = window.location.pathname.split('/').pop();
+
+            if (request.length > 0) {
+
+                showLoader("Estamos buscando as informações da Relação Musical...");
+
+                $http({
+                    method: 'POST',
+                    url: getAppRoot() + 'Musica/BuscarRelacao',
+                    data: { request: request }
+                }).then(function success(response) {
+
+                    if (response.data != null) {
+
+                        self.periodicSet = response.data;
+
+                        self.periodicSet.from = moment(self.periodicSet.from).format('DD/MM/yyyy');
+                        self.periodicSet.to = moment(self.periodicSet.to).format('DD/MM/yyyy');
+                    }
+
+                    Swal.close();
+                });
+            }
+        }
+
         self.listSongs = () => {
 
             $http({
@@ -52,8 +82,6 @@
 
                 if (response.data != null && response.data.length > 0)
                     self.songs = response.data;
-
-                console.log(self.songs);
             });
         }
 
@@ -66,8 +94,6 @@
                     url: getAppRoot() + 'Musica/CarregarItensRelacao',
                     data: { from: self.from, to: self.to }
                 }).then(function success(response) {
-
-                    console.log(response);
 
                     if (response.data != null && response.data.success) {
 
@@ -89,16 +115,16 @@
 
         self.add = () => {
 
-            if (true) {
+            let request = self.generateMusicSetRequestObject();
 
-                self.periodicSet.relacoesMusicais = self.musicSet;
+            if (request != null) {
 
-                showLoader('Estamos inserindo as informações da Música...');
+                showLoader('Estamos inserindo as informações da Relação Musical...');
 
                 $http({
                     method: 'POST',
                     url: getAppRoot() + 'Musica/AdicionarRelacaoMusical',
-                    data: self.periodicSet
+                    data: request
                 }).then(function success(response) {
 
                     if (response.data != null && response.data.success) {
@@ -131,6 +157,33 @@
 
         }
 
+        self.generateMusicSetRequestObject = () => {
+
+            let request = {
+                from: self.periodicSet.from,
+                to: self.periodicSet.to,
+                type: self.periodicSet.type,
+                musicSet: []
+            };
+
+            if (self.musicSet && self.musicSet.length > 0) {
+
+                angular.forEach(self.musicSet, function (set, index) {
+
+                    let musicSetItem = { date: set.date, songs: [] };
+
+                    angular.forEach(set.songs, (song, iindex) => {
+
+                        musicSetItem.songs.push(song.selected);
+                    });
+
+                    request.musicSet.push(musicSetItem);
+                });
+            }
+
+            return request;
+        }
+
         self.addSong = (set) => {
 
             set.songs.push({ id: '' });
@@ -140,10 +193,5 @@
 
             if (set.songs.length > 1)
                 set.songs.splice(set.songs.indexOf(song), 1);
-        }
-
-        self.selectSong = (set) => {
-
-            console.log(set);
         }
     }]);
