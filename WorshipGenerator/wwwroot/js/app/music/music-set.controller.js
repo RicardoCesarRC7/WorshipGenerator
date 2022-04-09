@@ -1,6 +1,6 @@
 ﻿angular
     .module('worshipGeneratorApp')
-    .controller('RelacoesMusicaisController', ['$scope', '$http', '$timeout', function RelacoesMusicaisController($scope, $http, $timeout) {
+    .controller('MusicSetController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
 
         self = this;
 
@@ -105,9 +105,9 @@
                             set.date = moment(set.date).format('DD/MM/yyyy');
                         });
 
-                        $('#itens-relacao-musicas').show();
-
-                        /*self.initSelect2();*/
+                        //$('html, body').animate({
+                        //    scrollTop: $('#itens-relacao-musicas').offset().top + 100
+                        //}, 500);
                     }
                 });
             }
@@ -133,7 +133,7 @@
                             icon: 'success',
                             title: 'Relação Musical Adicionada!',
                             text: 'A relação foi adicionada com sucesso.'
-                        }).then(() => self.list());
+                        }).then(() => window.location.reload());
 
                     } else {
 
@@ -182,6 +182,14 @@
             }
 
             return request;
+        }
+
+        self.clearFields = () => {
+
+            self.from = '';
+            self.to = '';
+            self.periodicSet = null;
+            self.musicSet = [];
         }
 
         self.addSong = (set) => {

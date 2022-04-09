@@ -1,6 +1,6 @@
 ﻿angular
     .module('worshipGeneratorApp')
-    .controller('MusicaController', ['$scope', '$http', function ($scope, $http) {
+    .controller('SongController', ['$scope', '$http', function ($scope, $http) {
 
         self = this;
 

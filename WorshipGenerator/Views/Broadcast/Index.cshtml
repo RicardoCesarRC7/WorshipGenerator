@@ -1,0 +1,53 @@
+﻿<section id="mainCarouselSection">
+    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="~/assets/images/carousel/2.png" alt="First slide">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Louvor e Música</h5>
+                    <p>Adicione e verifique músicas e informações sobre o Louvor da IBET</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container" ng-controller="BroadcastController as controller" ng-init="controller.init()">
+    <div class="mt-5"></div>
+
+    <div class="row">
+        <div class="col-12 text-right">
+            <button class="btn btn-success" type="button" id="adicionar-musica-button" ng-click="">Cadastrar escala <i class="fas fa-plus"></i></button>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <table class="table table-striped text-center">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th class="hidden-xs hidden-sm">Projeção</th>
+                        <th class="hidden-xs hidden-sm">Som</th>
+                        <th class="hidden-xs hidden-sm">Transmissão</th>
+                        <th class="hidden-xs hidden-sm">Som para Transmissão</th>
+                        <th class="hidden-xs hidden-sm">Monitor de Transmissão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="set in controller.broadcastSetList">
+                        <td class="hidden-xs hidden-sm hidden-md hidden-lg musica-id">{{set.date}}</td>
+                        <td>{{set.projectionOperator}}</td>
+                        <td class="hidden-xs hidden-sm">{{set.soundOperator}}</td>
+                        <td class="hidden-xs hidden-sm">{{set.broadcastOperator}}</td>
+                        <td class="hidden-xs hidden-sm">{{set.broadcastSoundOperator}}</td>
+                        <td class="hidden-xs hidden-sm">{{set.broadcastMonitor}}</td>
+                    </tr>
+                    <tr ng-show="controller.broadcastSetList == null || controller.broadcastSetList.length == 0">
+                        <td colspan="6">Não há registros</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
