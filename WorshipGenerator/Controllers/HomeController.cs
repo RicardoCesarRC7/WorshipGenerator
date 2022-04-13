@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Firebase.Auth;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Linq;
@@ -10,10 +13,12 @@ namespace WorshipGenerator.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly string _apiKey;
+
         private readonly IProgramacaoRepository _programacaoRepository;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IProgramacaoRepository programacaoRepository, ILogger<HomeController> logger)
+        public HomeController(IProgramacaoRepository programacaoRepository, ILogger<HomeController> logger, IConfiguration configuration)
         {
             _programacaoRepository = programacaoRepository;
             _logger = logger;
@@ -21,9 +26,18 @@ namespace WorshipGenerator.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var programacoes = await _programacaoRepository.ListAll();
+            var token = HttpContext.Session.GetString("_UserToken");
 
-            return View(programacoes);
+            if (!string.IsNullOrEmpty(token))
+            {
+                var programacoes = await _programacaoRepository.ListAll();
+
+                return View(programacoes);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         public IActionResult ListAllProgramacoes()

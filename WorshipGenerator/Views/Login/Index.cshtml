@@ -1,0 +1,26 @@
+﻿@{
+    //Layout = null;
+}
+
+<div class="container" ng-controller="loginController as controller" ng-init="controller.init()">
+    <form class="col-12">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <label class="control-label">E-mail</label>
+                    <input type="text" class="form-control" ng-model="controller.userLogin.email" />
+                </div>
+                <div class="col-12">
+                    <label class="control-label">Senha</label>
+                    <input type="password" class="form-control" ng-model="controller.userLogin.password" />
+                </div>
+            </div>
+            <div class="mt-2"></div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-success" ng-click="controller.login()">Entrar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
