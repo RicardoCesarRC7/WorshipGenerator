@@ -29,44 +29,79 @@ namespace WorshipGenerator.Controllers
 
         public async Task<IActionResult> Register(string email, string password)
         {
-            await _firebaseAuthProvider.CreateUserWithEmailAndPasswordAsync(email, password, "", true);
+            BaseResult result = new();
 
-            var authLink = await _firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+            {
+                await _firebaseAuthProvider.CreateUserWithEmailAndPasswordAsync(email, password, "", true);
 
-            if (authLink != null && !string.IsNullOrEmpty(authLink.FirebaseToken))
-                HttpContext.Session.SetString("_userToken", authLink.FirebaseToken);
+                var authLink = await _firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
 
-            return RedirectToAction("Index", "Home");
+                if (authLink != null && !string.IsNullOrEmpty(authLink.FirebaseToken))
+                    HttpContext.Session.SetString("_userToken", authLink.FirebaseToken);
+            }
+            else
+            {
+                result.Message = "Algo veio errado! Por favor, entre em contato com a equipe de Desenvolvimento.";
+            }
+
+            return Json(result);
         }
 
         public async Task<IActionResult> Login(string email, string password)
         {
             BaseResult result = new BaseResult();
 
-            try
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
             {
-                var authLink = await _firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
-
-                if (authLink != null && !string.IsNullOrEmpty(authLink.FirebaseToken))
+                try
                 {
-                    HttpContext.Session.SetString("_userToken", authLink.FirebaseToken);
+                    var authLink = await _firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
 
-                    result.Success = true;
+                    if (authLink != null && !string.IsNullOrEmpty(authLink.FirebaseToken))
+                    {
+                        HttpContext.Session.SetString("_userToken", authLink.FirebaseToken);
+
+                        result.Success = true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    result.Message = "";
                 }
             }
-            catch (Exception e)
+            else
             {
-                result.Message = "";
+                result.Message = "Algo veio errado! Por favor, entre em contato com a equipe de Desenvolvimento.";
             }
 
-            return View("Index");
+            return Json(result);
         }
 
         public IActionResult Logout()
         {
-            HttpContext.Session.Remove("_userToken");
+            BaseResult result = new();
 
-            return RedirectToAction("Index", "Home");
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("_userToken")))
+            {
+                HttpContext.Session.Remove("_userToken");
+
+                result.Success = true;
+            }
+            else
+            {
+                result.Message = "Não há usuário logado.";
+            }
+
+            return Json(result);
+        }
+
+        public IActionResult HasUserLogged()
+        {
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("_userToken")))
+                return Json(true);
+
+            return Json(false);
         }
     }
 }

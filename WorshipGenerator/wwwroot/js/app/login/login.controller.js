@@ -1,10 +1,11 @@
 ﻿angular
     .module('worshipGeneratorApp')
-    .controller('loginController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
+    .controller('loginController', ['$scope', '$http', '$timeout', function ($scope, $http) {
 
-        self = this;
+        const self = this;
 
         self.userLogin = { email: '', password: '', confirmPassword: '' };
+        self.hasUserLogged = false;
 
         self.EAction = {
             REGISTER: 1,
@@ -20,8 +21,10 @@
 
             self.action = self.EAction.LOGIN;
 
-            if (window.location.href.includes('reg=1'))
+            if (window.location.href.includes('reg=1')) {
+
                 self.action = self.EAction.REGISTER;
+            }
         }
 
         self.login = () => {
@@ -32,6 +35,17 @@
                     method: 'POST',
                     url: getAppRoot() + 'Login/Login',
                     data: self.userLogin
+                }).then((response) => {
+
+                    if (!response.data.success) {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.data.message.length > 0 ? response.data.message : 'Algo deu errado. Tente novamente mais tarde.'
+                        });
+                    } else
+                        window.location = getAppRoot();
                 });
             }
         }
@@ -44,7 +58,37 @@
                     method: 'POST',
                     url: getAppRoot() + 'Login/Register',
                     data: self.userLogin
+                }).then((response) => {
+
+                    if (!response.data.success) {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.data.message.length > 0 ? response.data.message : 'Algo deu errado. Tente novamente mais tarde.'
+                        });
+                    } else
+                        window.location = getAppRoot();
                 });
             }
+        }
+
+        self.logout = () => {
+
+            $http({
+                method: 'POST',
+                url: getAppRoot() + 'Login/Logout',
+            }).then((response) => window.location = getAppRoot());
+        }
+
+        self.checkUserLogged = () => {
+
+            $http({
+                method: 'POST',
+                url: getAppRoot() + 'Login/HasUserLogged'
+            }).then((response) => {
+
+                self.hasUserLogged = response.data;
+            });
         }
     }]);

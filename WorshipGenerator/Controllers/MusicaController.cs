@@ -8,6 +8,7 @@ using WorshipGenerator.Models;
 using WorshipGenerator.Models.Base;
 using WorshipGenerator.Models.Enums;
 using WorshipGenerator.Models.Repositories.Musica;
+using WorshipGenerator.Filters;
 
 namespace WorshipGenerator.Controllers
 {

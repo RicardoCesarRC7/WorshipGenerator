@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using WorshipGenerator.Filters;
 using WorshipGenerator.Models.Repositories.Musica;
 using WorshipGenerator.Models.Repositories.Programacao;
 

@@ -2,7 +2,7 @@
     .module('worshipGeneratorApp')
     .controller('SongController', ['$scope', '$http', function ($scope, $http) {
 
-        self = this;
+        const self = this;
 
         self.song = { id: '', name: '', author: '', page: 0, edition: 1, source: null, isValid: false };
 

@@ -33,8 +33,12 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Broadcast" asp-action="Index">Som e Transmissão/Projeção</a>
                     </li>
                 </ul>
-                <div class="d-flex">
-                    <a ng-click="controller.openLoginPage('register')">Login</a>
+                <div class="d-flex" ng-show="!controller.hasUserLogged">
+                    <button class="btn btn-default btn-sm mr-1" ng-click="controller.openLoginPage('')">Entrar</button>
+                    <button class="btn btn-outline-danger btn-sm" ng-click="controller.openLoginPage('register')">Registrar-se</button>
+                </div>
+                <div class="d-flex" ng-show="controller.hasUserLogged">
+                    <button class="btn btn-outline-danger btn-sm" ng-click="controller.logoutUser()">Sair</button>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
     .module('worshipGeneratorApp')
     .controller('MusicSetController', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
 
-        self = this;
+        const self = this;
 
         self.from = '';
         self.to = '';
