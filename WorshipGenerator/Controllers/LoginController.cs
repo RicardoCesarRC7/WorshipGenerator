@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorshipGenerator.Models.Base;
 
 namespace WorshipGenerator.Controllers
 {
@@ -40,18 +41,22 @@ namespace WorshipGenerator.Controllers
 
         public async Task<IActionResult> Login(string email, string password)
         {
+            BaseResult result = new BaseResult();
+
             try
             {
                 var authLink = await _firebaseAuthProvider.SignInWithEmailAndPasswordAsync(email, password);
 
                 if (authLink != null && !string.IsNullOrEmpty(authLink.FirebaseToken))
+                {
                     HttpContext.Session.SetString("_userToken", authLink.FirebaseToken);
 
-                return RedirectToAction("Index", "Home");
+                    result.Success = true;
+                }
             }
             catch (Exception e)
             {
-
+                result.Message = "";
             }
 
             return View("Index");

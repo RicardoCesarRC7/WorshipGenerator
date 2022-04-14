@@ -16,7 +16,16 @@
         getProgramacoesList();
         getRelacoesMusicaisList();
     }
+
+    initialize();
 });
+
+const initialize = () => {
+
+    //if (window.location.pathname.includes('Login')) {
+    //    $('nav').hide();
+    //}
+}
 
 const getAppRoot = () => window.location.protocol + '//' + window.location.host + '/';
 

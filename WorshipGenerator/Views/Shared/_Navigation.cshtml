@@ -1,4 +1,4 @@
-﻿<header class="d-print-none">
+﻿<header class="d-print-none" ng-controller="navigationController as controller" ng-init="controller.init()" ng-show="!controller.isLogin">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/images/logo/logo-black-text.png" width="150" /></a>
@@ -33,6 +33,9 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Broadcast" asp-action="Index">Som e Transmissão/Projeção</a>
                     </li>
                 </ul>
+                <div class="d-flex">
+                    <a ng-click="controller.openLoginPage('register')">Login</a>
+                </div>
             </div>
         </div>
     </nav>

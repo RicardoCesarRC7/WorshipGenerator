@@ -26,7 +26,7 @@ namespace WorshipGenerator.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var token = HttpContext.Session.GetString("_UserToken");
+            var token = HttpContext.Session.GetString("_userToken");
 
             if (!string.IsNullOrEmpty(token))
             {
