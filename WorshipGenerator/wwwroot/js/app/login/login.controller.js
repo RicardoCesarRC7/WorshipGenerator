@@ -91,4 +91,9 @@
                 self.hasUserLogged = response.data;
             });
         }
+
+        self.openRegister = () => {
+
+            window.location = getAppRoot() + 'Login?reg=1';
+        }
     }]);
