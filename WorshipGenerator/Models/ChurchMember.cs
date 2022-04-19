@@ -17,5 +17,6 @@ namespace WorshipGenerator.Models
         public string Phone { get; set; }
         public string Cellphone { get; set; }
         public Address Address { get; set; }
+        public string Function { get; set; }
     }
 }
