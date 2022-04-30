@@ -215,6 +215,7 @@ namespace WorshipGenerator.Models.Repositories.Musica
                                 musica.Author = result.Author;
                                 musica.Page = result.Page;
                                 musica.Edition = result.Edition;
+                                musica.Source = result.Source;
                             }
                         }
                     }

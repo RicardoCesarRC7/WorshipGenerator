@@ -1,0 +1,133 @@
+﻿<div class="modal fade" id="manage-member-modal" tabindex="-1" role="dialog" aria-labelledby="manage-member-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="manage-member-form">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gerenciar-musica-modal-title">Adicionar Membro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <!-- Names -->
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">Primeiro Nome</label>
+                            <input type="text" class="form-control" name="firstName" placeholder="Insira o primeiro nome" ng-model="controller.member.firstName" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">Sobrenome</label>
+                            <input type="text" class="form-control" name="lastName" placeholder="Insira o sobrenome" ng-model="controller.member.lastName" />
+                        </div>
+                    </div>
+                    <div class="row mt-3"></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="control-label">Nome Completo</label>
+                            <input type="text" class="form-control" name="fullName" placeholder="Insira o nome completo" ng-model="controller.song.name" ng-change="controller.validate()" />
+                        </div>
+                    </div>
+
+                    <!-- Civil information -->
+                    <div class="row mt-3"></div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">RG</label>
+                            <input type="text" class="form-control" name="rg" placeholder="Insira o RG" ng-model="controller.member.rg" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">CPF</label>
+                            <input type="text" class="form-control" name="cpf" placeholder="Insira o cpf" ng-model="controller.member.cpf" />
+                        </div>
+                    </div>
+
+                    <!-- Age and Date of Birth -->
+                    <div class="row mt-3"></div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">Idade</label>
+                            <input type="number" class="form-control" name="age" placeholder="Insira a idade" ng-model="controller.member.age" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">Data de Nascimento</label>
+                            <input type="text" class="form-control" name="birthDate" placeholder="Insira a data de nascimento" ng-model="controller.member.birthDate" />
+                        </div>
+                    </div>
+
+                    <!-- Contact information -->
+                    <div class="row mt-3"></div>
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <label class="control-label">E-mail</label>
+                            <input type="email" class="form-control" name="email" placeholder="Insira o email" ng-model="controller.member.email" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="control-label">Telefone fixo</label>
+                            <input type="text" class="form-control" name="phone" placeholder="Insira o telefone fixo" ng-model="controller.member.phone" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="control-label">Celular</label>
+                            <input type="text" class="form-control" name="cellphone" placeholder="Insira o celular" ng-model="controller.member.cellphone" />
+                        </div>
+                    </div>
+
+                    <!-- Address information -->
+                    <div class="row mt-3"></div>
+                    <div class="row">
+                        <div class="col-12 col-md-8">
+                            <label class="control-label">Endereço</label>
+                            <input type="text" class="form-control" name="place" placeholder="Insira o logradouro" ng-model="controller.member.address.place" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="control-label">Número</label>
+                            <input type="number" class="form-control" name="number" placeholder="Insira o número" ng-model="controller.member.address.number" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3"></div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">Complemento</label>
+                            <input type="text" class="form-control" name="complement" placeholder="Insira o complemento" ng-model="controller.member.address.complement" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">CEP</label>
+                            <input type="text" class="form-control" name="zipCode" placeholder="Insira o CEP" ng-model="controller.member.address.zipCode" />
+                        </div>
+                    </div>
+
+                    <!-- Departments and functions -->
+                    @*<div class="row mt-3"></div>
+                    <div class="row">
+                        <div class="col-12 col-md-8">
+                            <label class="control-label">Departamento</label>
+                            <input type="text" class="form-control" name="place" placeholder="Insira o departamento" ng-model="controller.member.address.place" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="control-label">Número</label>
+                            <input type="number" class="form-control" name="number" placeholder="Insira o número" ng-model="controller.member.address.number" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3"></div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">Complemento</label>
+                            <input type="text" class="form-control" name="complement" placeholder="Insira o complemento" ng-model="controller.member.address.complement" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="control-label">CEP</label>
+                            <input type="text" class="form-control" name="zipCode" placeholder="Insira o CEP" ng-model="controller.member.address.zipCode" />
+                        </div>
+                    </div>*@
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success" ng-click="!controller.isEdit ? controller.add() : controller.update()">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

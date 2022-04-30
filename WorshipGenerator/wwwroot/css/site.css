@@ -134,3 +134,11 @@ body {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
+
+select.error, textarea.error, input.error {
+    border-color: #FF0000;
+}
+
+.error {
+    color: #FF0000;
+}
