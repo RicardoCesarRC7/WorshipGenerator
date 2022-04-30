@@ -4,7 +4,7 @@
 
         const self = this;
 
-        self.userLogin = { email: '', password: '', confirmPassword: '' };
+        self.userLogin = { email: '', password: '', confirmPassword: '', isValid: false };
         self.hasUserLogged = false;
 
         self.EAction = {
@@ -29,7 +29,9 @@
 
         self.login = () => {
 
-            if (self.userLogin.email && self.userLogin.password) {
+            self.validate();
+
+            if (self.userLogin.isValid) {
 
                 $http({
                     method: 'POST',
@@ -52,7 +54,9 @@
 
         self.register = () => {
 
-            if (self.userLogin.email && self.userLogin.password && self.userLogin.confirmPassword) {
+            self.validate();
+
+            if (self.userLogin.isValid) {
 
                 $http({
                     method: 'POST',
@@ -95,5 +99,37 @@
         self.openRegister = () => {
 
             window.location = getAppRoot() + 'Login?reg=1';
+        }
+
+        self.validate = () => {
+
+            self.userLogin.isValid = true;
+
+            if (!self.userLogin || self.userLogin.length == 0) {
+
+                self.userLogin.isValid = false;
+                return;
+            }
+
+            if (!self.password || self.password.length == 0) {
+
+                self.userLogin.isValid = false;
+                return;
+            }
+
+            if (self.action == self.EAction.REGISTER) {
+
+                if (!self.userLogin.confirmPassword || self.userLogin.confirmPassword.length == 0) {
+
+                    self.userLogin.isValid = false;
+                    return;
+                }
+
+                if (self.userLogin.password != self.userLogin.confirmPassword) {
+
+                    self.userLogin.isValid = false;
+                    return;
+                }
+            }
         }
     }]);
