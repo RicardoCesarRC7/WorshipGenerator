@@ -105,13 +105,13 @@
 
             self.userLogin.isValid = true;
 
-            if (!self.userLogin || self.userLogin.length == 0) {
+            if (!self.userLogin.email || self.userLogin.email.length == 0) {
 
                 self.userLogin.isValid = false;
                 return;
             }
 
-            if (!self.password || self.password.length == 0) {
+            if (!self.userLogin.password || self.userLogin.password.length == 0) {
 
                 self.userLogin.isValid = false;
                 return;
