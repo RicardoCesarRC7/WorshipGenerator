@@ -3,12 +3,21 @@
         <div class="modal-content">
             <form id="manage-department-form">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="gerenciar-musica-modal-title">Adicionar Departamento</h5>
+                    <h5 class="modal-title" id="gerenciar-musica-modal-title">Novo Departamento</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="col-12">
+                                <h4>Informações básicas</h4>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Names -->
                     <div class="row">
@@ -28,6 +37,37 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mt-5"></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="col-12">
+                                <h4>Funções</h4>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3" ng-show="controller.functionController.functions.length > 0" ng-repeat="function in controller.functionController.functions">
+                            <div class="col-12">
+                                <div class="card bg-light">
+                                    <div class="card-body pr-0">
+                                        <div class="row col-12 pr-0">
+                                            <input type="text" class="form-control" placeholder="Insira o nome da função..." ng-model="function.name" />
+                                        </div>
+                                        <div class="row mt-3"></div>
+                                        <div class="row col-12 pr-0">
+                                            <textarea class="form-control" placeholder="Descreva a função..." ng-model="function.description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 text-center">
+                            <button type="button" class="btn btn-sm btn-outline-primary" ng-click="controller.functionController.add()">Adicionar <i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
 
                     <!-- Civil information -->
                     <div class="row mt-3"></div>
@@ -35,9 +75,9 @@
                         <div class="col-12 col-md-6">
                             @*<label class="control-label">Fonte</label>*@
                             @*<select class="form-control" id="fonte-musica" ng-model="controller.function">
-                                <option value="" disabled="disabled" selected="selected">Selecione uma função</option>
-                                <option ng-repeat="source in controller.musicalSources" value="{{source.id}}">{{source.name}}</option>
-                            </select>*@
+                    <option value="" disabled="disabled" selected="selected">Selecione uma função</option>
+                    <option ng-repeat="source in controller.musicalSources" value="{{source.id}}">{{source.name}}</option>
+                </select>*@
                         </div>
                     </div>
                 </div>

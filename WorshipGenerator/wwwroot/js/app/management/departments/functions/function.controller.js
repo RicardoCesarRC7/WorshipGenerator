@@ -8,15 +8,24 @@
 
     self.isEdit = false;
 
-    self.init = () => {
+    self.init = (isEdit) => {
+        
+        self.isEdit = isEdit;
 
+        if (!self.isEdit) {
+
+            self.function = self.initFunctionModel();
+
+            self.functions.push(self.function);
+        }
     }
 
     self.list = (departmentId) => {
 
         $http({
             method: 'GET',
-            url: getAppRoot() + 'Management/ListFunctions'
+            url: getAppRoot() + 'Management/ListFunctions',
+            data: departmentId
         }).then(function success(response) {
 
             console.log(response.data)
@@ -26,42 +35,13 @@
         });
     }
 
-    self.add = () => {
+    self.add = (functions) => {
 
         self.validate();
 
         if (self.function.isValid) {
 
-            showLoader('Estamos inserindo as informações da função...');
-
-            console.log(self.function)
-
-            $http({
-                method: 'POST',
-                url: getAppRoot() + 'Management/AddFunction',
-                data: self.function
-            }).then(function success(response) {
-
-                if (response.data != null && response.data.success) {
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Função Adicionada!',
-                        text: 'A função foi adicionada com sucesso.'
-                    }).then(() => {
-                        self.list();
-                        self.closeManageDepartmentModal();
-                    });
-
-                } else {
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Algo deu errado. Tente novamente mais tarde.'
-                    });
-                }
-            });
+            self.functions.push(self.initFunctionModel());
         }
     }
 
@@ -69,35 +49,9 @@
 
         self.validate();
 
-        if (self.department.isValid) {
+        if (self.function.isValid) {
 
-            showLoader('Estamos atualizando as informações do departamento...');
-
-            $http({
-                method: 'POST',
-                url: getAppRoot() + 'Management/UpdateDepartment',
-                data: self.department
-            }).then(function success(response) {
-
-                if (response.data != null && response.data.success) {
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Departamento Atualizada!',
-                        text: 'As informações do departamento foram atualizadas com sucesso.'
-                    }).then(() => {
-                        $('#manage-department-modal').modal('toggle');
-                    });
-
-                } else {
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Algo deu errado. Tente novamente mais tarde.'
-                    });
-                }
-            });
+            
         }
     }
 
@@ -105,77 +59,34 @@
 
         if (id) {
 
-            showLoader('Estamos removendo o departamento...')
-
-            $http({
-                method: 'POST',
-                url: getAppRoot() + 'Management/RemoveDepartment',
-                data: { id: id }
-            }).then(function success(response) {
-
-                if (response.data != null && response.data.success) {
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Departamento Removido!',
-                        text: 'O departamento foi removido com sucesso.'
-                    }).then(() => {
-                        self.list();
-                    });
-
-                } else {
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Algo deu errado. Tente novamente mais tarde.'
-                    });
-                }
-            });
+            self.functions.slice(self.functions.indexOf(i => i.id == id), 1);
         }
     }
 
     self.validate = () => {
 
-        self.department.isValid = true;
+        self.function.isValid = true;
 
-        if (!self.department.name || self.department.name.length == 0) {
+        if (!self.function.name || self.function.name.length == 0) {
 
-            self.department.isValid = false;
+            self.function.isValid = false;
             return;
         }
 
-        if (!self.department.description || self.department.description.length == 0) {
+        if (!self.function.description || self.function.description.length == 0) {
 
-            self.department.isValid = false;
+            self.function.isValid = false;
             return;
         }
     }
 
-    self.openManageDepartmentModal = (department) => {
-
-        self.department = self.initDepartmentModel();
-        self.isEdit = false;
-
-        if (department) {
-
-            self.isEdit = true;
-
-            self.department = department;
-        }
-
-        $('#manage-department-modal').modal('toggle');
-    }
-
-    self.closeManageDepartmentModal = () => $('#manage-department-modal').modal('toggle');
-
-    self.initDepartmentModel = () => {
+    self.initFunctionModel = () => {
 
         return {
             id: '',
             name: '',
             description: '',
-            functions: [],
+            department: null,
             isValid: false
         };
     }

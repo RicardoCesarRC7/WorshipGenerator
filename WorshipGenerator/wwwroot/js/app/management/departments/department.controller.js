@@ -5,6 +5,7 @@
         const self = this;
 
         self.department = null;
+        self.functionController = null;
 
         self.departments = [];
 
@@ -12,7 +13,12 @@
 
         self.init = () => {
 
-            self.department = self.initDepartmentModel();
+            self.functionController = new functionController($scope, $http);
+
+            self.functionController.init();
+
+            self.department = self.initDepartmentModel();;
+
             self.initFormValidation();
             self.list();
         }
