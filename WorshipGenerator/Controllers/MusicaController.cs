@@ -40,13 +40,24 @@ namespace WorshipGenerator.Controllers
 
         public IActionResult Relacao(string id)
         {
-            ViewBag.setId = id;
+            var token = HttpContext.Session.GetString("_userToken");
 
-            return View();
+            if (!string.IsNullOrEmpty(token))
+            {
+                ViewBag.setId = id;
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
         public IActionResult DetalhesRelacao(string id)
         {
+            ViewBag.setId = id;
+
             return View();
         }
 

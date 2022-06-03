@@ -258,4 +258,9 @@
             if (set.songs.length > 1)
                 set.songs.splice(set.songs.indexOf(song), 1);
         }
+
+        self.goToEditMusicSetPage = () => {
+
+            window.location = getAppRoot() + 'Musica/Relacao/' + self.musicSetId;
+        }
     }]);
