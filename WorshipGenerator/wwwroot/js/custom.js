@@ -1,6 +1,7 @@
 ﻿$(document).ready(() => {
 
     $(() => $('[data-toggle="tooltip"]').tooltip());
+
     $(() => $('.datepicker').datepicker({
         changeMonth: true,
         changeYear: true,
@@ -9,6 +10,12 @@
         buttonImageOnly: true,
         nextText: '>',
         prevText: '<'
+    }));
+
+    $(() => $('.clockpicker').clockpicker({
+        placement: 'top',
+        donetext: 'Pronto',
+        autoclose: true
     }));
 
     if (window.location.search == '') {

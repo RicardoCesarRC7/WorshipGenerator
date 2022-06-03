@@ -96,6 +96,44 @@
             });
         }
 
+        self.sendRedefinePasswordEmail = () => {
+
+            if (self.userLogin.email != null && self.userLogin.email.length > 0) {
+
+                $http({
+                    method: 'POST',
+                    url: getAppRoot() + 'Login/SendRedefinePasswordEmail',
+                    data: { email: self.userLogin.email }
+                }).then((response) => {
+
+                    if (response.data.success) {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'E-mail enviado!',
+                            text: 'Enviamos um e-mail de redefinição de senha. Verifique sua caixa de entrada.'
+                        }).then(() => window.location.reload());
+
+                    } else {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.data.message.length > 0 ? response.data.message : 'Algo deu errado. Tente novamente mais tarde.'
+                        });
+                    }
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Insira o e-mail de sua conta!'
+                });
+            }
+        }
+
         self.openRegister = () => {
 
             window.location = getAppRoot() + 'Login?reg=1';
