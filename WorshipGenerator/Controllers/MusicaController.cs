@@ -9,6 +9,7 @@ using WorshipGenerator.Models.Base;
 using WorshipGenerator.Models.Enums;
 using WorshipGenerator.Models.Repositories.Musica;
 using WorshipGenerator.Filters;
+using Microsoft.AspNetCore.Http;
 
 namespace WorshipGenerator.Controllers
 {
@@ -25,20 +26,31 @@ namespace WorshipGenerator.Controllers
 
         public IActionResult Index()
         {
+            var token = HttpContext.Session.GetString("_userToken");
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+        }
+
+        public IActionResult Relacao(string id)
+        {
+            ViewBag.setId = id;
+
             return View();
         }
 
-        public IActionResult CriarRelacao()
+        public IActionResult DetalhesRelacao(string id)
         {
             return View();
         }
 
-        public async Task<IActionResult> DetalhesRelacao(string id)
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> Gerenciar()
+        public IActionResult Gerenciar()
         {
             return View();
         }
@@ -133,6 +145,12 @@ namespace WorshipGenerator.Controllers
         public async Task<IActionResult> BuscarRelacao(string request)
         {
             return Json(await _musicaRepository.BuscarRelacao(request));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateMusicSet(PeriodicSet request)
+        {
+            return Json(await _musicaRepository.UpdateMusicSet(request));
         }
 
         [HttpGet]
