@@ -9,7 +9,7 @@
     self.isEdit = false;
 
     self.init = (isEdit) => {
-        
+
         self.isEdit = isEdit;
 
         if (!self.isEdit) {
@@ -35,14 +35,9 @@
         });
     }
 
-    self.add = (functions) => {
+    self.add = () => {
 
-        self.validate();
-
-        if (self.function.isValid) {
-
-            self.functions.push(self.initFunctionModel());
-        }
+        self.functions.push(self.initFunctionModel());
     }
 
     self.update = () => {
@@ -51,7 +46,7 @@
 
         if (self.function.isValid) {
 
-            
+
         }
     }
 
@@ -63,19 +58,19 @@
         }
     }
 
-    self.validate = () => {
+    self.validate = (departmentFunction) => {
 
-        self.function.isValid = true;
+        departmentFunction.isValid = true;
 
-        if (!self.function.name || self.function.name.length == 0) {
+        if (!departmentFunction.name || departmentFunction.name.length == 0) {
 
-            self.function.isValid = false;
+            departmentFunction.isValid = false;
             return;
         }
 
-        if (!self.function.description || self.function.description.length == 0) {
+        if (!departmentFunction.description || departmentFunction.description.length == 0) {
 
-            self.function.isValid = false;
+            departmentFunction.isValid = false;
             return;
         }
     }

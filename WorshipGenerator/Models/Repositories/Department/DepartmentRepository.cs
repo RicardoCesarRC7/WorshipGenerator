@@ -89,6 +89,11 @@ namespace WorshipGenerator.Models.Repositories.Department
             {
                 try
                 {
+                    if (request.Functions != null && request.Functions.Count > 0)
+                    {
+                        //TODO
+                    }
+
                     await _firebaseClient.Child(_departmentsIndexDatabase).Child(request.Id).PutAsync(JsonConvert.SerializeObject(request));
 
                     result.Success = true;

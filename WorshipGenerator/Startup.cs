@@ -35,7 +35,10 @@ namespace WorshipGenerator
             services.AddControllersWithViews();
 
             services.AddMvc().AddSessionStateTempDataProvider();
-            services.AddSession();
+            services.AddSession(options => 
+            {
+                options.IdleTimeout = TimeSpan.FromHours(1);
+            });
 
             services.AddScoped<IProgramacaoRepository, ProgramacaoRepository>();
             services.AddScoped<IMusicaRepository, MusicaRepository>();

@@ -17,7 +17,7 @@
 
             self.functionController.init();
 
-            self.department = self.initDepartmentModel();;
+            self.department = self.initDepartmentModel();
 
             self.initFormValidation();
             self.list();
@@ -58,6 +58,8 @@
 
                 showLoader('Estamos inserindo as informações do departamento...');
 
+                self.department.functions = self.functionController.functions.filter(i => i.isValid);
+
                 console.log(self.department)
 
                 $http({
@@ -96,6 +98,8 @@
             if (self.department.isValid) {
 
                 showLoader('Estamos atualizando as informações do departamento...');
+
+                self.department.functions = self.functionController.functions.filter(i => i.isValid);
 
                 $http({
                     method: 'POST',
@@ -174,11 +178,29 @@
                 self.department.isValid = false;
                 return;
             }
+
+            if (self.department.functions != null && self.department.functions.length > 0) {
+
+                angular.forEach(self.department.functions, function (departmentFunction, i) {
+
+                    self.functionController.validate(departmentFunction);
+                });
+
+                if (self.department.functions.filter(i => !i.isValid) > 0) {
+
+                    self.department.isValid = false;
+                    return;
+                }
+            }
         }
 
         self.openManageDepartmentModal = (department) => {
 
             self.department = self.initDepartmentModel();
+
+            self.functionController.functions = [];
+            self.functionController.add();
+
             self.isEdit = false;
 
             if (department) {
@@ -186,6 +208,9 @@
                 self.isEdit = true;
 
                 self.department = department;
+
+                if (self.department.functions != null && self.department.functions.length > 0)
+                    self.functionController.functions = department.functions;
             }
 
             $('#manage-department-modal').modal('toggle');
