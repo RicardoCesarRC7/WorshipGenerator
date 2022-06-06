@@ -11,9 +11,11 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WorshipGenerator.Business.Management.Departments;
+using WorshipGenerator.Business.Management.Functions;
 using WorshipGenerator.Business.Management.Membership;
 using WorshipGenerator.Filters;
 using WorshipGenerator.Models.Repositories.Department;
+using WorshipGenerator.Models.Repositories.Function;
 using WorshipGenerator.Models.Repositories.Membership;
 using WorshipGenerator.Models.Repositories.Musica;
 using WorshipGenerator.Models.Repositories.Programacao;
@@ -44,9 +46,11 @@ namespace WorshipGenerator
             services.AddScoped<IMusicaRepository, MusicaRepository>();
             services.AddScoped<IMembershipRepository, MembershipRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IFunctionRepository, FunctionRepository>();
 
             services.AddScoped<IMembershipBusiness, MembershipBusiness>();
             services.AddScoped<IDepartmentBusiness, DepartmentBusiness>();
+            services.AddScoped<IFunctionBusiness, FunctionBusiness>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

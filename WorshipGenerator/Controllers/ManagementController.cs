@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WorshipGenerator.Business.Management.Departments;
+using WorshipGenerator.Business.Management.Functions;
 using WorshipGenerator.Business.Management.Membership;
 using WorshipGenerator.Models;
 
@@ -13,11 +14,13 @@ namespace WorshipGenerator.Controllers
     {
         private readonly IMembershipBusiness _membershipBusiness;
         private readonly IDepartmentBusiness _departmentBusiness;
+        private readonly IFunctionBusiness _functionBusiness;
 
-        public ManagementController(IMembershipBusiness membershipBusiness, IDepartmentBusiness departmentBusiness)
+        public ManagementController(IMembershipBusiness membershipBusiness, IDepartmentBusiness departmentBusiness, IFunctionBusiness functionBusiness)
         {
             _membershipBusiness = membershipBusiness;
             _departmentBusiness = departmentBusiness;
+            _functionBusiness = functionBusiness;
         }
 
         public IActionResult Index()
@@ -84,6 +87,18 @@ namespace WorshipGenerator.Controllers
         public async Task<IActionResult> RemoveDepartment(string id)
         {
             return Json(await _departmentBusiness.Remove(id));
+        }
+        #endregion
+
+        #region Functions CRUD Operations
+        public async Task<IActionResult> ListAllFunctions()
+        {
+            return Json(await _functionBusiness.ListAll());
+        }
+
+        public async Task<IActionResult> ListFunctions(string departmentId)
+        {
+            return Json(await _functionBusiness.List(departmentId));
         }
         #endregion
     }

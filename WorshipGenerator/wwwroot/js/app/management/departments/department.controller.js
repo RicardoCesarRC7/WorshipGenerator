@@ -13,11 +13,12 @@
 
         self.init = () => {
 
-            self.functionController = new functionController($scope, $http);
+            self.department = self.initDepartmentModel();
 
+            self.functionController = new functionController($scope, $http);
             self.functionController.init();
 
-            self.department = self.initDepartmentModel();
+            self.department.functions = self.functionController.functions;
 
             self.initFormValidation();
             self.list();
@@ -52,13 +53,15 @@
 
         self.add = () => {
 
+            self.department.functions = self.functionController.functions;
+
             self.validate();
 
             if (self.department.isValid) {
 
                 showLoader('Estamos inserindo as informações do departamento...');
 
-                self.department.functions = self.functionController.functions.filter(i => i.isValid);
+                /*self.department.functions = self.functionController.functions.filter(i => i.isValid);*/
 
                 console.log(self.department)
 

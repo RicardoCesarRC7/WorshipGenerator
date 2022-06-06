@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WorshipGenerator.Models.Base;
+using WorshipGenerator.Models.Repositories.Function;
 
 namespace WorshipGenerator.Models.Repositories.Department
 {
@@ -16,11 +17,13 @@ namespace WorshipGenerator.Models.Repositories.Department
         private readonly string _departmentsIndexDatabase;
         private readonly FirebaseClient _firebaseClient;
 
+        private readonly IFunctionRepository _functionRepository;
         private readonly IConfiguration _configuration;
 
-        public DepartmentRepository(IConfiguration configuration)
+        public DepartmentRepository(IFunctionRepository functionRepository, IConfiguration configuration)
         {
             _configuration = configuration;
+            _functionRepository = functionRepository;
 
             if (_configuration != null)
             {
@@ -68,7 +71,15 @@ namespace WorshipGenerator.Models.Repositories.Department
             {
                 try
                 {
-                    await _firebaseClient.Child(_departmentsIndexDatabase).PostAsync(JsonConvert.SerializeObject(request));
+                    var response = await _firebaseClient.Child(_departmentsIndexDatabase).PostAsync(JsonConvert.SerializeObject(request));
+                    
+                    if (response != null && request.Functions != null && request.Functions.Count > 0)
+                    {
+                        request.Id = response.Key;
+
+                        foreach (ChurchFunction function in request.Functions)
+                            await _functionRepository.Add(function, request);
+                    }
 
                     result.Success = true;
                 }
@@ -89,12 +100,15 @@ namespace WorshipGenerator.Models.Repositories.Department
             {
                 try
                 {
+                    await _firebaseClient.Child(_departmentsIndexDatabase).Child(request.Id).PutAsync(JsonConvert.SerializeObject(request));
+
                     if (request.Functions != null && request.Functions.Count > 0)
                     {
-                        //TODO
+                        foreach (ChurchFunction function in request.Functions)
+                        {
+                            await _functionRepository.Update(function);
+                        }
                     }
-
-                    await _firebaseClient.Child(_departmentsIndexDatabase).Child(request.Id).PutAsync(JsonConvert.SerializeObject(request));
 
                     result.Success = true;
                 }

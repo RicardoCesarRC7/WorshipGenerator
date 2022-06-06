@@ -7,12 +7,16 @@
         self.member = null;
 
         self.members = [];
+        self.churchDepartments = [];
+        self.churchFunctions = [];
 
         self.isEdit = false;
 
         self.init = () => {
 
             self.member = self.initMemberModel();
+            self.listDepartments();
+            self.listAllFunctions();
             self.initFormValidation();
             self.list();
         }
@@ -223,9 +227,37 @@
                     complement: null,
                     zipCode: null
                 },
-                Departments: [],
-                Functions: [],
+                departments: [{ id: '', functions: [{ id: '' }] }],
+                functions: [''],
                 isValid: false
             };
+        }
+
+        self.listDepartments = () => {
+
+            $http({
+                method: 'GET',
+                url: getAppRoot() + 'Management/ListDepartments'
+            }).then(function success(response) {
+
+                console.log(response.data)
+
+                if (response.data != null && response.data.length > 0)
+                    self.churchDepartments = response.data;
+            });
+        }
+
+        self.listAllFunctions = () => {
+
+            $http({
+                method: 'GET',
+                url: getAppRoot() + 'Management/ListAllFunctions'
+            }).then(function success(response) {
+
+                console.log(response.data)
+
+                if (response.data != null && response.data.length > 0)
+                    self.churchFunctions = response.data;
+            });
         }
     }]);
