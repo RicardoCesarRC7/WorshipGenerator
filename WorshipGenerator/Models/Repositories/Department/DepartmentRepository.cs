@@ -106,7 +106,10 @@ namespace WorshipGenerator.Models.Repositories.Department
                     {
                         foreach (ChurchFunction function in request.Functions)
                         {
-                            await _functionRepository.Update(function);
+                            if (!string.IsNullOrEmpty(function.Id))
+                                await _functionRepository.Update(function);
+                            else
+                                await _functionRepository.Add(function, request);
                         }
                     }
 
