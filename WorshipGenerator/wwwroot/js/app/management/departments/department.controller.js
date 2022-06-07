@@ -96,6 +96,8 @@
 
         self.update = () => {
 
+            self.department.functions = self.functionController.functions;
+
             self.validate();
 
             if (self.department.isValid) {

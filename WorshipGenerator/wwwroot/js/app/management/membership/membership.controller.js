@@ -264,7 +264,7 @@
                 firstName: '',
                 lastName: '',
                 age: 0,
-                birthDate: 1,
+                birthDate: null,
                 rg: null,
                 cpf: null,
                 email: null,
