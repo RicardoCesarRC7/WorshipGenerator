@@ -142,3 +142,27 @@ select.error, textarea.error, input.error {
 .error {
     color: #FF0000;
 }
+
+.breadcrumb-manage-item {
+    border-right: 1px solid #dee2e6;
+}
+
+.manage-member-step-number {
+    /*background-color: darkred;*/
+    border-radius: 50%;
+    width: auto !important;
+    /*margin-top: 8px;*/
+    /*height: 40px;*/
+    padding-top: 10px;
+    min-height: 56px;
+    min-width: 56px;
+}
+
+    .manage-member-step-number strong:first-of-type {
+        font-size: 20px;
+        color: white;
+    }
+
+    .manage-member-step-number.step-item-active {
+        background-color: #17987e !important;
+    }

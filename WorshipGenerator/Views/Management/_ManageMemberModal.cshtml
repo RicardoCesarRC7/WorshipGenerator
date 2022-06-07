@@ -8,142 +8,142 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <div class="modal-header" style="padding: 0px">
+                    <div class="row col-12 text-center">
+                        <div class="col p-3 {{controller.managementSteps.indexOf(item) != (controller.managementSteps.length - 1) ? 'breadcrumb-manage-item' : ''}}" ng-repeat="item in controller.managementSteps">
+                            <div class="row col-12 text-center">
+                                <div class="col-2 offset-md-3 manage-member-step-number" style="background-color: {{item.isSelected ? 'darkred' : 'silver'}}">
+                                    <strong>{{item.id}}</strong>
+                                </div>
+                                <h5 class="col-6">{{item.name}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-body">
+                    <section id="basic-info-section" ng-show="controller.currentStep.id == controller.EManagementSteps.BASIC_INFO">
+                        <!-- Names -->
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label class="control-label">Primeiro Nome</label>
+                                <input type="text" class="form-control" name="firstName" placeholder="Insira o primeiro nome" ng-model="controller.member.firstName" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="control-label">Sobrenome</label>
+                                <input type="text" class="form-control" name="lastName" placeholder="Insira o sobrenome" ng-model="controller.member.lastName" />
+                            </div>
+                        </div>
+                        <div class="row mt-3"></div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="control-label">Nome Completo</label>
+                                <input type="text" class="form-control" name="fullName" placeholder="Insira o nome completo" ng-model="controller.member.fullName" />
+                            </div>
+                        </div>
 
-                    <!-- Names -->
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">Primeiro Nome</label>
-                            <input type="text" class="form-control" name="firstName" placeholder="Insira o primeiro nome" ng-model="controller.member.firstName" />
+                        <!-- Civil information -->
+                        <div class="row mt-3"></div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label class="control-label">RG</label>
+                                <input type="text" class="form-control" name="rg" placeholder="Insira o RG" ng-model="controller.member.rg" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="control-label">CPF</label>
+                                <input type="text" class="form-control" name="cpf" placeholder="Insira o cpf" ng-model="controller.member.cpf" />
+                            </div>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">Sobrenome</label>
-                            <input type="text" class="form-control" name="lastName" placeholder="Insira o sobrenome" ng-model="controller.member.lastName" />
-                        </div>
-                    </div>
-                    <div class="row mt-3"></div>
-                    <div class="row">
-                        <div class="col-12">
-                            <label class="control-label">Nome Completo</label>
-                            <input type="text" class="form-control" name="fullName" placeholder="Insira o nome completo" ng-model="controller.song.name" ng-change="controller.validate()" />
-                        </div>
-                    </div>
 
-                    <!-- Civil information -->
-                    <div class="row mt-3"></div>
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">RG</label>
-                            <input type="text" class="form-control" name="rg" placeholder="Insira o RG" ng-model="controller.member.rg" />
+                        <!-- Age and Date of Birth -->
+                        <div class="row mt-3"></div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label class="control-label">Idade</label>
+                                <input type="number" class="form-control" name="age" placeholder="Insira a idade" ng-model="controller.member.age" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="control-label">Data de Nascimento</label>
+                                <input type="text" class="form-control" name="birthDate" placeholder="Insira a data de nascimento" ng-model="controller.member.birthDate" />
+                            </div>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">CPF</label>
-                            <input type="text" class="form-control" name="cpf" placeholder="Insira o cpf" ng-model="controller.member.cpf" />
-                        </div>
-                    </div>
 
-                    <!-- Age and Date of Birth -->
-                    <div class="row mt-3"></div>
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">Idade</label>
-                            <input type="number" class="form-control" name="age" placeholder="Insira a idade" ng-model="controller.member.age" />
+                        <!-- Contact information -->
+                        <div class="row mt-3"></div>
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <label class="control-label">E-mail</label>
+                                <input type="email" class="form-control" name="email" placeholder="Insira o email" ng-model="controller.member.email" />
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="control-label">Telefone fixo</label>
+                                <input type="text" class="form-control" name="phone" placeholder="Insira o telefone fixo" ng-model="controller.member.phone" />
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="control-label">Celular</label>
+                                <input type="text" class="form-control" name="cellphone" placeholder="Insira o celular" ng-model="controller.member.cellphone" />
+                            </div>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">Data de Nascimento</label>
-                            <input type="text" class="form-control" name="birthDate" placeholder="Insira a data de nascimento" ng-model="controller.member.birthDate" />
-                        </div>
-                    </div>
 
-                    <!-- Contact information -->
-                    <div class="row mt-3"></div>
-                    <div class="row">
-                        <div class="col-12 col-md-4">
-                            <label class="control-label">E-mail</label>
-                            <input type="email" class="form-control" name="email" placeholder="Insira o email" ng-model="controller.member.email" />
+                        <!-- Address information -->
+                        <div class="row mt-3"></div>
+                        <div class="row">
+                            <div class="col-12 col-md-8">
+                                <label class="control-label">Endereço</label>
+                                <input type="text" class="form-control" name="place" placeholder="Insira o logradouro" ng-model="controller.member.address.place" />
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label class="control-label">Número</label>
+                                <input type="number" class="form-control" name="number" placeholder="Insira o número" ng-model="controller.member.address.number" />
+                            </div>
                         </div>
-                        <div class="col-12 col-md-4">
-                            <label class="control-label">Telefone fixo</label>
-                            <input type="text" class="form-control" name="phone" placeholder="Insira o telefone fixo" ng-model="controller.member.phone" />
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <label class="control-label">Celular</label>
-                            <input type="text" class="form-control" name="cellphone" placeholder="Insira o celular" ng-model="controller.member.cellphone" />
-                        </div>
-                    </div>
 
-                    <!-- Address information -->
-                    <div class="row mt-3"></div>
-                    <div class="row">
-                        <div class="col-12 col-md-8">
-                            <label class="control-label">Endereço</label>
-                            <input type="text" class="form-control" name="place" placeholder="Insira o logradouro" ng-model="controller.member.address.place" />
+                        <div class="row mt-3"></div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label class="control-label">Complemento</label>
+                                <input type="text" class="form-control" name="complement" placeholder="Insira o complemento" ng-model="controller.member.address.complement" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="control-label">CEP</label>
+                                <input type="text" class="form-control" name="zipCode" placeholder="Insira o CEP" ng-model="controller.member.address.zipCode" />
+                            </div>
                         </div>
-                        <div class="col-12 col-md-4">
-                            <label class="control-label">Número</label>
-                            <input type="number" class="form-control" name="number" placeholder="Insira o número" ng-model="controller.member.address.number" />
-                        </div>
-                    </div>
-
-                    <div class="row mt-3"></div>
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">Complemento</label>
-                            <input type="text" class="form-control" name="complement" placeholder="Insira o complemento" ng-model="controller.member.address.complement" />
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">CEP</label>
-                            <input type="text" class="form-control" name="zipCode" placeholder="Insira o CEP" ng-model="controller.member.address.zipCode" />
-                        </div>
-                    </div>
+                    </section>
 
                     <!-- Departments and functions -->
                     <div class="row mt-3"></div>
-                    @*<div class="row mt-3 col-12"><hr /></div>*@
-                    <div class="row mb-3" ng-repeat="memberDepartment in controller.member.departments">
-                        <div class="col-12">
-                            <div class="card bg-light">
-                                <div class="card-body pr-0">
-                                    <div class="row col-12 pr-0">
-                                        <label class="control-label">Departamento</label>
-                                        <select class="form-control" ng-model="memberDepartment">
-                                            <option value="">Selecione...</option>
-                                            <option value="" ng-repeat="department in controller.churchDepartments">{{department.name}}</option>
-                                        </select>
+                    <section id="member-functions-section" ng-show="controller.currentStep.id == controller.EManagementSteps.FUNCTIONS">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card bg-light">
+                                    <div class="card-header">
+                                        <h5>Funções</h5>
                                     </div>
-                                    <div class="row mt-3"></div>
-                                    <div class="row col-12 pr-0">
-                                        <label class="control-label">Função</label>
-                                        <select class="form-control" ng-model="memberDepartment.functions">
-                                            <option value="">Selecione...</option>
-                                            <option value="" ng-repeat="function in controller.churchFunctions">{{function.name}}</option>
-                                        </select>
+                                    <div class="card-body pr-0">
+                                        <div class="row mb-3" ng-repeat="memberFunction in controller.member.functions">
+                                            <div class="col-8 col-md-10 pr-0">
+                                                <select class="form-control" ng-model="memberFunction.id">
+                                                    <option value="">Selecione...</option>
+                                                    <option value="{{function.id}}" ng-repeat="function in controller.churchFunctions">{{function.name}} - {{function.department.name}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-4 col-md-2">
+                                                <button class="btn btn-dark btn-sm" type="button" ng-click="controller.addMemberFunction()"><i class="fas fa-plus"></i></button>
+                                                <button class="btn btn-danger btn-sm" type="button" ng-click="controller.removeMemberFunction(memberFunction)"><i class="fas fa-minus"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
-                        <div class="col-12 col-md-6">
-                            
-                        </div>
-                    </div>
-
-                    @*<div class="row mt-3"></div>
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">Complemento</label>
-                            <input type="text" class="form-control" name="complement" placeholder="Insira o complemento" ng-model="controller.member.address.complement" />
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="control-label">CEP</label>
-                            <input type="text" class="form-control" name="zipCode" placeholder="Insira o CEP" ng-model="controller.member.address.zipCode" />
-                        </div>
-                    </div>*@
+                    </section>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success" ng-click="!controller.isEdit ? controller.add() : controller.update()">Salvar</button>
+                    <button type="button" class="btn btn-danger" ng-click="controller.returnToLastStep()" ng-show="controller.currentStep.id != controller.EManagementSteps.BASIC_INFO"><i class="fas fa-arrow-circle-left"></i> Voltar</button>
+                    <button type="button" class="btn btn-success" ng-click="controller.goToNextStep()" ng-show="controller.currentStep.id == controller.EManagementSteps.BASIC_INFO">Avançar <i class="fas fa-arrow-circle-right"></i></button>
+                    <button type="submit" class="btn btn-success" ng-click="!controller.isEdit ? controller.add() : controller.update()" ng-show="controller.currentStep.id == controller.EManagementSteps.FUNCTIONS">Salvar</button>
                 </div>
             </form>
         </div>
