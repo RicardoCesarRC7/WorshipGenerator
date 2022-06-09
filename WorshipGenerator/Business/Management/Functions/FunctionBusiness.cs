@@ -32,6 +32,11 @@ namespace WorshipGenerator.Business.Management.Functions
             return await _functionRepository.Add(request, department);
         }
 
+        public async Task<ChurchFunction> Get(string id)
+        {
+            return await _functionRepository.Get(id);
+        }
+
         public async Task<BaseResult> Update(ChurchFunction request)
         {
             return await _functionRepository.Update(request);

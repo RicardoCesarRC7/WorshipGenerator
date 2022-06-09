@@ -25,6 +25,8 @@
 
                 self.action = self.EAction.REGISTER;
             }
+
+            self.initEnterKeypress();
         }
 
         self.login = () => {
@@ -169,5 +171,19 @@
                     return;
                 }
             }
+        }
+
+        self.initEnterKeypress = () => {
+
+            $(document).keypress(() => {
+
+                if (event.keyCode === 13 && event.key === 'Enter') {
+
+                    if (self.action == self.EAction.LOGIN)
+                        self.login();
+                    else if (self.action == self.EAction.REGISTER)
+                        self.register();
+                }
+            });
         }
     }]);

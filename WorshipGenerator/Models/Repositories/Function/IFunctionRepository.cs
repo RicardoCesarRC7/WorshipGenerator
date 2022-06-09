@@ -9,6 +9,7 @@ namespace WorshipGenerator.Models.Repositories.Function
         Task<List<ChurchFunction>> ListAll();
         Task<List<ChurchFunction>> List(string departmentId);
         Task<BaseResult> Add(ChurchFunction request, ChurchDepartment department);
+        Task<ChurchFunction> Get(string id);
         Task<BaseResult> Update(ChurchFunction request);
         Task<BaseResult> Remove(string id);
     }

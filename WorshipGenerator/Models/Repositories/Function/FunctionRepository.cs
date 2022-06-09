@@ -112,6 +112,30 @@ namespace WorshipGenerator.Models.Repositories.Function
             return result;
         }
 
+        public async Task<ChurchFunction> Get(string id)
+        {
+            ChurchFunction result = null;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                try
+                {
+                    result = await _firebaseClient.Child(_functionsIndexDatabase).Child(id).OnceSingleAsync<ChurchFunction>();
+
+                    if (result != null)
+                    {
+                        result.Id = id;
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            return result;
+        }
+
         public async Task<BaseResult> Update(ChurchFunction request)
         {
             BaseResult result = new BaseResult();

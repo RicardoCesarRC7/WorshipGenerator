@@ -235,11 +235,11 @@
                 return;
             }
 
-            if (!self.member.address || !self.member.address.place || !self.member.address.number) {
+            //if (!self.member.address || !self.member.address.place || !self.member.address.number) {
 
-                self.member.isValid = false;
-                return;
-            }
+            //    self.member.isValid = false;
+            //    return;
+            //}
         }
 
         self.openManageMemberModal = (member) => {
@@ -252,6 +252,9 @@
                 self.isEdit = true;
 
                 self.member = member;
+
+                if (member.functions == null)
+                    self.addMemberFunction();
             }
 
             $('#manage-member-modal').modal('toggle');
@@ -326,6 +329,9 @@
         }
 
         self.addMemberFunction = () => {
+
+            if (self.member.functions == null)
+                self.member.functions = [];
 
             self.member.functions.push({ id: '' });
         }

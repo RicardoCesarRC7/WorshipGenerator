@@ -46,6 +46,12 @@ namespace WorshipGenerator.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> ListMembersByDepartment(string departmentId)
+        {
+            return Json(await _membershipBusiness.ListByDepartment(departmentId));
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddMember(ChurchMember request)
         {
             return Json(await _membershipBusiness.Add(request));

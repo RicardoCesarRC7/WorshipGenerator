@@ -27,6 +27,11 @@ namespace WorshipGenerator.Business.Management.Departments
             return await _departmentRepository.Add(request);
         }
 
+        public async Task<ChurchDepartment> Get(string id)
+        {
+            return await _departmentRepository.Get(id);
+        }
+
         public async Task<BaseResult> Update(ChurchDepartment request)
         {
             return await _departmentRepository.Update(request);
