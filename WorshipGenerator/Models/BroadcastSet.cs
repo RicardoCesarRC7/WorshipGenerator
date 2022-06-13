@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorshipGenerator.Models.Base;
 
 namespace WorshipGenerator.Models
 {
-    public class BroadcastSet
+    public class BroadcastSet : SetBase
     {
-        public string Id { get; set; }
-        //public string  { get; set; }
+        public BroadcastSet(DateTime date)
+        {
+            Date = date;
+            Members = new List<ChurchMember>();
+        }
+
+        public List<ChurchMember> Members { get; set; }
     }
 }

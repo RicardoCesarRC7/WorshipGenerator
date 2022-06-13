@@ -93,40 +93,15 @@ namespace WorshipGenerator.Controllers
             {
                 try
                 {
-                    DateTime dataAtual = Convert.ToDateTime(from);
-                    DateTime ate = Convert.ToDateTime(to);
+                    PeriodicSet periodicSet = new PeriodicSet(ESetType.MUSIC, from, to);
 
-                    PeriodicSet relacao = new PeriodicSet
-                    { 
-                        Type = ESetType.MUSIC,
-                        From = dataAtual,
-                        To = ate,
-                        MusicSet = new List<MusicSet>()
-                    };
-
-                    while (dataAtual <= ate)
-                    {
-                        if (dataAtual.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            MusicSet relacaoMusical = new MusicSet
-                            { 
-                                Date = dataAtual,
-                                Songs = new List<Song>() { new Song() }
-                            };
-
-                            relacao.MusicSet.Add(relacaoMusical);
-                        }
-
-                        dataAtual = dataAtual.AddDays(1);
-                    }
+                    periodicSet.GenerateDates();
 
                     result.Success = true;
-                    result.Content = relacao;
+                    result.Content = periodicSet;
                 }
                 catch (Exception e)
                 {
-                    _logger.LogInformation("Erro carregando itens de relacao musical: " + e.Message, e);
-
                     result.Success = false;
                 }
             }
