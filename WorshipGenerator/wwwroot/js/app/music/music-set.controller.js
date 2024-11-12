@@ -4,6 +4,9 @@
 
         const self = this;
 
+        self.musicSetId = null;
+        self.isUpdate = false;
+
         self.from = '';
         self.to = '';
 
@@ -13,7 +16,7 @@
         }
 
         self.periodicSetList = [];
-        self.periodicSet = null;
+        self.periodicSet = { from: null, to: null };
         self.musicSet = [];
         self.songs = [];
 
@@ -22,8 +25,15 @@
             self.list();
             self.listSongs();
 
-            if (window.location.pathname.includes('DetalhesRelacao'))
+            if (typeof musicSetId != 'undefined' && musicSetId.length > 0)
+                self.musicSetId = musicSetId;
+
+            if (self.musicSetId != null || window.location.pathname.includes('DetalhesRelacao')) {
+
+                self.isUpdate = self.musicSetId != null && !window.location.pathname.includes('DetalhesRelacao')
+
                 self.get();
+            }
         }
 
         self.list = () => {
@@ -66,6 +76,21 @@
 
                         self.periodicSet.from = moment(self.periodicSet.from).format('DD/MM/yyyy');
                         self.periodicSet.to = moment(self.periodicSet.to).format('DD/MM/yyyy');
+
+                        if (self.isUpdate) {
+
+                            self.musicSet = self.periodicSet.musicSet;
+
+                            angular.forEach(self.musicSet, function (set, i) {
+
+                                set.date = moment(set.date).format('DD/MM/yyyy');
+
+                                angular.forEach(set.songs, function (song, ii) {
+
+                                    song.selected = JSON.parse(JSON.stringify(song));
+                                });
+                            });
+                        }
                     }
 
                     Swal.close();
@@ -87,12 +112,12 @@
 
         self.getConfirmDates = () => {
 
-            if (self.from.length > 0 && self.to.length > 0) {
+            if (self.periodicSet.from.length > 0 && self.periodicSet.to.length > 0) {
 
                 $http({
                     method: 'POST',
                     url: getAppRoot() + 'Musica/CarregarItensRelacao',
-                    data: { from: self.from, to: self.to }
+                    data: { from: self.periodicSet.from, to: self.periodicSet.to }
                 }).then(function success(response) {
 
                     if (response.data != null && response.data.success) {
@@ -100,14 +125,13 @@
                         self.periodicSet = response.data.content;
                         self.musicSet = response.data.content.musicSet;
 
+                        self.periodicSet.from = moment(self.periodicSet.from).format('DD/MM/yyyy');
+                        self.periodicSet.to = moment(self.periodicSet.to).format('DD/MM/yyyy');
+
                         angular.forEach(self.musicSet, function (set, index) {
 
                             set.date = moment(set.date).format('DD/MM/yyyy');
                         });
-
-                        //$('html, body').animate({
-                        //    scrollTop: $('#itens-relacao-musicas').offset().top + 100
-                        //}, 500);
                     }
                 });
             }
@@ -133,7 +157,7 @@
                             icon: 'success',
                             title: 'Relação Musical Adicionada!',
                             text: 'A relação foi adicionada com sucesso.'
-                        }).then(() => window.location.reload());
+                        }).then(() => window.location = getAppRoot() + 'Musica/DetalhesRelacao/' + response.data.message);
 
                     } else {
 
@@ -149,7 +173,36 @@
 
         self.edit = () => {
 
+            let request = self.generateMusicSetRequestObject();
 
+            if (request != null) {
+
+                showLoader('Estamos atualizando as informações da Relação Musical...');
+
+                $http({
+                    method: 'POST',
+                    url: getAppRoot() + 'Musica/UpdateMusicSet',
+                    data: request
+                }).then(function success(response) {
+
+                    if (response.data != null && response.data.success) {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Relação Musical Atualizada!',
+                            text: 'A relação foi atualizada com sucesso.'
+                        }).then(() => window.location = getAppRoot() + 'Musica/DetalhesRelacao/' + self.musicSetId);
+
+                    } else {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo deu errado. Tente novamente mais tarde.'
+                        });
+                    }
+                });
+            }
         }
 
         self.remove = () => {
@@ -181,6 +234,9 @@
                 });
             }
 
+            if (self.isUpdate)
+                request.id = self.periodicSet.id;
+
             return request;
         }
 
@@ -201,5 +257,10 @@
 
             if (set.songs.length > 1)
                 set.songs.splice(set.songs.indexOf(song), 1);
+        }
+
+        self.goToEditMusicSetPage = () => {
+
+            window.location = getAppRoot() + 'Musica/Relacao/' + self.musicSetId;
         }
     }]);

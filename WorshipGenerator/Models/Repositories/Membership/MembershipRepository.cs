@@ -60,6 +60,22 @@ namespace WorshipGenerator.Models.Repositories.Membership
             return result;
         }
 
+        public async Task<List<ChurchMember>> ListByFunction()
+        {
+            List<ChurchMember> result = new List<ChurchMember>();
+
+            List<ChurchMember> allMembers = await List();
+
+            if (allMembers != null && allMembers.Count > 0)
+            {
+
+
+                result = allMembers.Where(i => i.Functions.Any(ii => ii.Id == "")).ToList();
+            }
+
+            return result;
+        }
+
         public async Task<BaseResult> Add(ChurchMember request)
         {
             BaseResult result = new BaseResult();

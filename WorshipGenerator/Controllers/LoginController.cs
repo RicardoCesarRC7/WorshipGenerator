@@ -74,7 +74,7 @@ namespace WorshipGenerator.Controllers
                 }
                 catch (Exception e)
                 {
-                    result.Message = "";
+                    result.Message = "E-mail ou senha incorretos";
                 }
             }
             else
@@ -98,6 +98,27 @@ namespace WorshipGenerator.Controllers
             else
             {
                 result.Message = "Não há usuário logado.";
+            }
+
+            return Json(result);
+        }
+
+        public async Task<IActionResult> SendRedefinePasswordEmail(string email)
+        {
+            BaseResult result = new();
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                try
+                {
+                    await _firebaseAuthProvider.SendPasswordResetEmailAsync(email);
+
+                    result.Success = true;
+                }
+                catch (Exception e)
+                {
+                    result.Message = "O e-mail inserido não existe em nossa base de dados";
+                }
             }
 
             return Json(result);

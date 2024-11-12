@@ -10,6 +10,7 @@ namespace WorshipGenerator.Business.Management.Membership
     public interface IMembershipBusiness
     {
         Task<List<ChurchMember>> List();
+        Task<List<ChurchMember>> ListByDepartment(string departmentId);
         Task<BaseResult> Add(ChurchMember request);
         Task<BaseResult> Update(ChurchMember request);
         Task<BaseResult> Remove(string id);

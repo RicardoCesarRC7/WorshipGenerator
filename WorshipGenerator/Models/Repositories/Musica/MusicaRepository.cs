@@ -180,8 +180,9 @@ namespace WorshipGenerator.Models.Repositories.Musica
                 {
                     request.IssueDate = DateTime.Now;
 
-                    await _firebaseClient.Child(_musicSetsIndexDatabase).PostAsync(JsonConvert.SerializeObject(request));
+                    var response = await _firebaseClient.Child(_musicSetsIndexDatabase).PostAsync(JsonConvert.SerializeObject(request));
 
+                    result.Message = response.Key;
                     result.Success = true;
                 }
                 catch (Exception e)
@@ -203,6 +204,8 @@ namespace WorshipGenerator.Models.Repositories.Musica
 
                 if (relacao != null && relacao.MusicSet != null && relacao.MusicSet.Count > 0)
                 {
+                    relacao.Id = id;
+
                     foreach (var relacaoMusical in relacao.MusicSet)
                     {
                         if (relacaoMusical.Songs != null && relacaoMusical.Songs.Count > 0)
@@ -223,6 +226,29 @@ namespace WorshipGenerator.Models.Repositories.Musica
             }
 
             return relacao;
+        }
+
+        public async Task<BaseResult> UpdateMusicSet(PeriodicSet request)
+        {
+            BaseResult result = new BaseResult();
+
+            if (request != null && !string.IsNullOrEmpty(request.Id))
+            {
+                try
+                {
+                    request.IssueDate = DateTime.Now;
+
+                    await _firebaseClient.Child(_musicSetsIndexDatabase).Child(request.Id).PutAsync(JsonConvert.SerializeObject(request));
+
+                    result.Success = true;
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            return result;
         }
 
         public async Task<List<PeriodicSet>> ListarRelacoes()

@@ -12,7 +12,7 @@
     </div>
 </section>
 
-<div class="container" ng-controller="BroadcastController as controller" ng-init="controller.init()">
+<div class="container" ng-controller="broadcastController as controller" ng-init="controller.init()">
     <div class="mt-5"></div>
 
     <div class="row">
@@ -36,12 +36,12 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="set in controller.broadcastSetList">
-                        <td class="hidden-xs hidden-sm hidden-md hidden-lg musica-id">{{set.date}}</td>
+                        @*<td class="hidden-xs hidden-sm hidden-md hidden-lg musica-id">{{set.date}}</td>
                         <td>{{set.projectionOperator}}</td>
                         <td class="hidden-xs hidden-sm">{{set.soundOperator}}</td>
                         <td class="hidden-xs hidden-sm">{{set.broadcastOperator}}</td>
                         <td class="hidden-xs hidden-sm">{{set.broadcastSoundOperator}}</td>
-                        <td class="hidden-xs hidden-sm">{{set.broadcastMonitor}}</td>
+                        <td class="hidden-xs hidden-sm">{{set.broadcastMonitor}}</td>*@
                     </tr>
                     <tr ng-show="controller.broadcastSetList == null || controller.broadcastSetList.length == 0">
                         <td colspan="6">Não há registros</td>

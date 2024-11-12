@@ -25,11 +25,11 @@
         <div class="row">
             <div class="col-6">
                 <label class="control-label">De:</label>
-                <input class="form-control datepicker" type="text" ng-model="controller.from" />
+                <input class="form-control datepicker" type="text" ng-model="controller.periodicSet.from" />
             </div>
             <div class="col-6">
                 <label class="control-label">Até:</label>
-                <input class="form-control datepicker" type="text" ng-model="controller.to" />
+                <input class="form-control datepicker" type="text" ng-model="controller.periodicSet.to" />
             </div>
         </div>
         <div class="mt-3"></div>
@@ -84,10 +84,14 @@
 
             <div class="row">
                 <div class="col-12 text-center">
-                    <button class="btn btn-success" id="adicionar-relacao-button" ng-click="controller.add()">Adicionar Relação <i class="fas fa-check"></i></button>
+                    <button class="btn btn-success" id="adicionar-relacao-button" ng-click="!controller.isUpdate ? controller.add() : controller.edit()">{{ !controller.isUpdate ? 'Adicionar Relação' : 'Atualizar Relação' }} <i class="fas fa-check"></i></button>
                 </div>
             </div>
 
         </section>
     </div>
 </div>
+
+@section Scripts {
+    <script>const musicSetId = '@ViewBag.setId'</script>
+}

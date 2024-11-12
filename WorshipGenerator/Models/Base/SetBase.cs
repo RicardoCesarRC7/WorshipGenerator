@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WorshipGenerator.Models.Enums
+namespace WorshipGenerator.Models.Base
 {
-    public enum ESetType
+    public class SetBase
     {
-        MUSIC = 1,
-        BROADCAST = 2
+        public DateTime Date { get; set; }
     }
 }

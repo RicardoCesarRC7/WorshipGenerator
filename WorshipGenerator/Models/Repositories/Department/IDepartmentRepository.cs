@@ -10,6 +10,7 @@ namespace WorshipGenerator.Models.Repositories.Department
     {
         Task<List<ChurchDepartment>> List();
         Task<BaseResult> Add(ChurchDepartment request);
+        Task<ChurchDepartment> Get(string id);
         Task<BaseResult> Update(ChurchDepartment request);
         Task<BaseResult> Remove(string id);
     }

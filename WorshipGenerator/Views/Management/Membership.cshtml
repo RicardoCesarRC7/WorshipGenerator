@@ -26,30 +26,35 @@
             <table class="table table-striped text-center">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        @*<th>Id</th>*@
                         <th>Nome</th>
-                        <th>Idade</th>
-                        <th>Telefone/Celular</th>
+                        <th class="hidden-xs hidden-sm">Idade</th>
+                        <th class="hidden-xs hidden-sm">Telefone/Celular</th>
                         <th>E-mail</th>
-                        <th>Endereço</th>
-                        
+                        <th class="hidden-xs hidden-sm">Endereço</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="member in controller.members">
-                        <td class="musica-id">{{member.id}}</td>
-                        <td>{{member.name}}</td>
+                        @*<td class="musica-id">{{member.id}}</td>*@
+                        <td>{{member.firstName}} {{member.lastName}}</td>
                         <td class="hidden-xs hidden-sm">{{member.age}}</td>
-                        <td class="hidden-xs hidden-sm">{{member.Cellphone}}</td>
-                        <td class="hidden-xs hidden-sm">{{member.email}}</td>
+                        <td class="hidden-xs hidden-sm">{{member.cellphone != null ? member.cellphone : member.phone}}</td>
+                        <td>{{member.email}}</td>
                         <td class="hidden-xs hidden-sm">{{member.address.place}} {{member.address.number}} {{member.address.complement}} {{member.address.zipCode}}</td>
                         <td>
-                            <button class="btn btn-sm btn-dark" ng-click=""><i class="fas fa-pencil-alt"></i></button>
-                            <button class="btn btn-sm btn-danger" ng-click=""><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-sm btn-dark" ng-click="controller.openManageMemberModal(member)"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="btn btn-sm btn-danger" ng-click="controller.remove(member.id)"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                     <tr ng-show="controller.members == null || controller.members.length == 0">
-                        <td colspan="7">Não há membros registrados</td>
+                        <td colspan="7" ng-show="controller.isLoading">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Carregando...</span>
+                            </div>
+                        </td>
+                        <td colspan="7" ng-show="!controller.isLoading">Não há membros registrados</td>
                     </tr>
                 </tbody>
             </table>

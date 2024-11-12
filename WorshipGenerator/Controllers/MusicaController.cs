@@ -9,6 +9,7 @@ using WorshipGenerator.Models.Base;
 using WorshipGenerator.Models.Enums;
 using WorshipGenerator.Models.Repositories.Musica;
 using WorshipGenerator.Filters;
+using Microsoft.AspNetCore.Http;
 
 namespace WorshipGenerator.Controllers
 {
@@ -25,20 +26,42 @@ namespace WorshipGenerator.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var token = HttpContext.Session.GetString("_userToken");
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
-        public IActionResult CriarRelacao()
+        public IActionResult Relacao(string id)
         {
-            return View();
+            var token = HttpContext.Session.GetString("_userToken");
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                ViewBag.setId = id;
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
         }
 
-        public async Task<IActionResult> DetalhesRelacao(string id)
+        public IActionResult DetalhesRelacao(string id)
         {
+            ViewBag.setId = id;
+
             return View();
         }
 
-        public async Task<IActionResult> Gerenciar()
+        public IActionResult Gerenciar()
         {
             return View();
         }
@@ -70,40 +93,15 @@ namespace WorshipGenerator.Controllers
             {
                 try
                 {
-                    DateTime dataAtual = Convert.ToDateTime(from);
-                    DateTime ate = Convert.ToDateTime(to);
+                    PeriodicSet periodicSet = new PeriodicSet(ESetType.MUSIC, from, to);
 
-                    PeriodicSet relacao = new PeriodicSet
-                    { 
-                        Type = ESetType.MUSIC,
-                        From = dataAtual,
-                        To = ate,
-                        MusicSet = new List<MusicSet>()
-                    };
-
-                    while (dataAtual <= ate)
-                    {
-                        if (dataAtual.DayOfWeek == DayOfWeek.Sunday)
-                        {
-                            MusicSet relacaoMusical = new MusicSet
-                            { 
-                                Date = dataAtual,
-                                Songs = new List<Song>() { new Song() }
-                            };
-
-                            relacao.MusicSet.Add(relacaoMusical);
-                        }
-
-                        dataAtual = dataAtual.AddDays(1);
-                    }
+                    periodicSet.GenerateDates();
 
                     result.Success = true;
-                    result.Content = relacao;
+                    result.Content = periodicSet;
                 }
                 catch (Exception e)
                 {
-                    _logger.LogInformation("Erro carregando itens de relacao musical: " + e.Message, e);
-
                     result.Success = false;
                 }
             }
@@ -133,6 +131,12 @@ namespace WorshipGenerator.Controllers
         public async Task<IActionResult> BuscarRelacao(string request)
         {
             return Json(await _musicaRepository.BuscarRelacao(request));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateMusicSet(PeriodicSet request)
+        {
+            return Json(await _musicaRepository.UpdateMusicSet(request));
         }
 
         [HttpGet]

@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorshipGenerator.Business.Management.Functions;
 using WorshipGenerator.Models.Base;
+using WorshipGenerator.Models.Repositories.Function;
 
 namespace WorshipGenerator.Models.Repositories.Department
 {
@@ -16,11 +18,13 @@ namespace WorshipGenerator.Models.Repositories.Department
         private readonly string _departmentsIndexDatabase;
         private readonly FirebaseClient _firebaseClient;
 
+        private readonly IFunctionBusiness _functionBusiness;
         private readonly IConfiguration _configuration;
 
-        public DepartmentRepository(IConfiguration configuration)
+        public DepartmentRepository(IFunctionBusiness functionBusiness, IConfiguration configuration)
         {
             _configuration = configuration;
+            _functionBusiness = functionBusiness;
 
             if (_configuration != null)
             {
@@ -48,6 +52,8 @@ namespace WorshipGenerator.Models.Repositories.Department
 
                         department.Id = item.Key;
 
+                        department.Functions = await _functionBusiness.List(department.Id);
+
                         result.Add(department);
                     }
                 }
@@ -68,9 +74,43 @@ namespace WorshipGenerator.Models.Repositories.Department
             {
                 try
                 {
-                    await _firebaseClient.Child(_departmentsIndexDatabase).PostAsync(JsonConvert.SerializeObject(request));
+                    var response = await _firebaseClient.Child(_departmentsIndexDatabase).PostAsync(JsonConvert.SerializeObject(request));
+                    
+                    if (response != null && request.Functions != null && request.Functions.Count > 0)
+                    {
+                        request.Id = response.Key;
+
+                        foreach (ChurchFunction function in request.Functions)
+                            await _functionBusiness.Add(function, request);
+                    }
 
                     result.Success = true;
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<ChurchDepartment> Get(string id)
+        {
+            ChurchDepartment result = null;
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                try
+                {
+                    result = await _firebaseClient.Child(_departmentsIndexDatabase).Child(id).OnceSingleAsync<ChurchDepartment>();
+
+                    if (result != null)
+                    {
+                        result.Id = id;
+
+                        result.Functions = await _functionBusiness.List(id);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -90,6 +130,17 @@ namespace WorshipGenerator.Models.Repositories.Department
                 try
                 {
                     await _firebaseClient.Child(_departmentsIndexDatabase).Child(request.Id).PutAsync(JsonConvert.SerializeObject(request));
+
+                    if (request.Functions != null && request.Functions.Count > 0)
+                    {
+                        foreach (ChurchFunction function in request.Functions)
+                        {
+                            if (!string.IsNullOrEmpty(function.Id))
+                                await _functionBusiness.Update(function);
+                            else
+                                await _functionBusiness.Add(function, request);
+                        }
+                    }
 
                     result.Success = true;
                 }

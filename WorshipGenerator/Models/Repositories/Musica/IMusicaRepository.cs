@@ -14,6 +14,7 @@ namespace WorshipGenerator.Models.Repositories.Musica
         Task<List<Source>> ListarFontes();
         Task<bool> InserirFontesMusicais();
         Task<BaseResult> AdicionarRelacao(PeriodicSet relacaoMusical);
+        Task<BaseResult> UpdateMusicSet(PeriodicSet request);
         Task<PeriodicSet> BuscarRelacao(string id);
         Task<List<PeriodicSet>> ListarRelacoes();
     }

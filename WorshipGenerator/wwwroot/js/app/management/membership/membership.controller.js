@@ -7,12 +7,34 @@
         self.member = null;
 
         self.members = [];
+        self.churchDepartments = [];
+        self.churchFunctions = [];
 
         self.isEdit = false;
+
+        self.EManagementSteps = {
+            BASIC_INFO: 1,
+            FUNCTIONS: 2
+        }
+
+        self.managementSteps = [
+            { id: self.EManagementSteps.BASIC_INFO, name: 'Informações Gerais', sort: 1, isSelected: true },
+            { id: self.EManagementSteps.FUNCTIONS, name: 'Funções do membro', sort: 2, isSelected: false }
+        ];
+
+        self.currentStep = null;
+
+        self.isLoading = false;
 
         self.init = () => {
 
             self.member = self.initMemberModel();
+
+            self.isLoading = true;
+            
+            self.listAllFunctions();
+            self.currentStep = self.managementSteps.filter(i => i.isSelected)[0];
+
             self.initFormValidation();
             self.list();
         }
@@ -27,14 +49,28 @@
                     lastName: 'required',
                     age: 'required',
                     birthDate: 'required',
-                    cellphone: 'required',
-                    rg: 'required',
-                    cpf: 'required'
+                    cellphone: 'required'
                 }
             });
         }
 
+        self.reinit = () => {
+
+            self.member = self.initMemberModel();
+            self.list();
+
+            $.each(self.managementSteps, (index, step) => {
+
+                step.isSelected = false;
+            });
+
+            self.currentStep = self.managementSteps.filter(i => i.sort == 1)[0];
+            self.currentStep.isSelected = true;
+        }
+
         self.list = () => {
+
+            self.isLoading = true;
 
             $http({
                 method: 'GET',
@@ -43,8 +79,17 @@
 
                 console.log(response.data)
 
-                if (response.data != null && response.data.length > 0)
+                if (response.data != null && response.data.length > 0) {
+
+                    $.each(response.data, (index, member) => {
+
+                        member.birthDate = moment(member.birthDate).format('DD/MM/yyyy');
+                    });
+
                     self.members = response.data;
+                }
+
+                self.isLoading = false;
             });
         }
 
@@ -70,7 +115,12 @@
                             icon: 'success',
                             title: 'Membro Adicionado!',
                             text: 'O membro foi adicionado com sucesso.'
-                        }).then(() => self.list());
+                        }).then(() => {
+
+                            self.reinit()
+
+                            $('#manage-member-modal').modal('toggle');
+                        });
 
                     } else {
 
@@ -95,7 +145,7 @@
                 $http({
                     method: 'POST',
                     url: getAppRoot() + 'Management/UpdateMember',
-                    data: self.song
+                    data: self.member
                 }).then(function success(response) {
 
                     if (response.data != null && response.data.success) {
@@ -105,6 +155,9 @@
                             title: 'Membro Atualizada!',
                             text: 'As informações do membro foram atualizadas com sucesso.'
                         }).then(() => {
+
+                            self.reinit();
+
                             $('#manage-member-modal').modal('toggle');
                         });
 
@@ -128,7 +181,7 @@
 
                 $http({
                     method: 'POST',
-                    url: getAppRoot() + 'Management/RemoverMember',
+                    url: getAppRoot() + 'Management/RemoveMember',
                     data: { id: id }
                 }).then(function success(response) {
 
@@ -182,11 +235,11 @@
                 return;
             }
 
-            if (!self.member.address || !self.member.address.place || !self.member.address.number) {
+            //if (!self.member.address || !self.member.address.place || !self.member.address.number) {
 
-                self.member.isValid = false;
-                return;
-            }
+            //    self.member.isValid = false;
+            //    return;
+            //}
         }
 
         self.openManageMemberModal = (member) => {
@@ -199,6 +252,9 @@
                 self.isEdit = true;
 
                 self.member = member;
+
+                if (member.functions == null)
+                    self.addMemberFunction();
             }
 
             $('#manage-member-modal').modal('toggle');
@@ -211,7 +267,7 @@
                 firstName: '',
                 lastName: '',
                 age: 0,
-                birthDate: 1,
+                birthDate: null,
                 rg: null,
                 cpf: null,
                 email: null,
@@ -223,9 +279,102 @@
                     complement: null,
                     zipCode: null
                 },
-                Departments: [],
-                Functions: [],
+                functions: [{
+                    id: ''
+                }],
                 isValid: false
             };
+        }
+
+        self.listDepartments = () => {
+
+            $http({
+                method: 'GET',
+                url: getAppRoot() + 'Management/ListDepartments'
+            }).then(function success(response) {
+
+                console.log(response.data)
+
+                if (response.data != null && response.data.length > 0) {
+
+                    self.churchDepartments = response.data;
+
+                    if (self.churchFunctions && self.churchFunctions.length > 0) {
+
+                        angular.forEach(self.churchFunctions, function (churchFunction, i) {
+
+                            churchFunction.department = self.churchDepartments.filter(i => i.id == churchFunction.department.id)[0];
+                        });
+                    }
+                }
+            });
+        }
+
+        self.listAllFunctions = () => {
+
+            $http({
+                method: 'GET',
+                url: getAppRoot() + 'Management/ListAllFunctions'
+            }).then(function success(response) {
+
+                console.log(response.data)
+
+                if (response.data != null && response.data.length > 0) {
+
+                    self.churchFunctions = response.data;
+
+                    self.listDepartments();
+                }
+            });
+        }
+
+        self.addMemberFunction = () => {
+
+            if (self.member.functions == null)
+                self.member.functions = [];
+
+            self.member.functions.push({ id: '' });
+        }
+
+        self.removeMemberFunction = (memberFunction) => {
+
+            if (self.member.functions.length > 1) {
+
+                let index = self.member.functions.indexOf(memberFunction);
+
+                self.member.functions.splice(index, 1);
+            }
+        }
+
+        self.goToNextStep = () => {
+
+            let nextStep = self.managementSteps.filter(i => i.id == (self.currentStep.id + 1)).length > 0 ? self.managementSteps.filter(i => i.id == (self.currentStep.id + 1))[0] : null;
+
+            if (nextStep != null) {
+
+                self.currentStep.isSelected = false;
+
+                $.each(self.managementSteps, (index, step) => step.isSelected = false);
+
+                nextStep.isSelected = true;
+
+                self.currentStep = nextStep;
+            }
+        }
+
+        self.returnToLastStep = () => {
+
+            let nextStep = self.managementSteps.filter(i => i.id == (self.currentStep.id - 1)).length > 0 ? self.managementSteps.filter(i => i.id == (self.currentStep.id - 1))[0] : null;
+
+            if (nextStep != null) {
+
+                self.currentStep.isSelected = false;
+
+                $.each(self.managementSteps, (index, step) => step.isSelected = false);
+                
+                nextStep.isSelected = true;
+
+                self.currentStep = nextStep;
+            }
         }
     }]);

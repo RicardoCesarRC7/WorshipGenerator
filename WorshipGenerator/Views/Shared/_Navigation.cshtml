@@ -15,28 +15,34 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Programacao" asp-action="Index">Criar Programação</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" asp-area="" asp-controller="Musica" asp-action="Index" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-dark" asp-area="" asp-controller="Musica" asp-action="Index" id="music-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Louvor e Música
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="/Musica/Gerenciar">Gerenciamento de Músicas</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="music-dropdown-menu">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Musica" asp-action="Gerenciar">Gerenciamento de Músicas</a></li>
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item dropdown-toggle" href="#">Grupo de Louvor</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/Musica/CriarRelacao">Adicionar Relação de Músicas</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Musica" asp-action="Relacao">Adicionar Relação de Músicas</a></li>
                                     <li><a class="dropdown-item" href="#">Participantes</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Broadcast" asp-action="Index">Som e Transmissão/Projeção</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" asp-area="" asp-controller="Broadcast" asp-action="Index" id="broadcast-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Som e Transmissão/Projeção
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="broadcast-dropdown-menu">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Broadcast" asp-action="Index">Escalas</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Broadcast" asp-action="Set">Cadastrar escala</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" asp-area="" asp-controller="Management" asp-action="Index" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-dark" asp-area="" asp-controller="Management" asp-action="Index" id="management-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Administrativo
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <ul class="dropdown-menu" aria-labelledby="management-dropdown-menu">
                             <li><a class="dropdown-item" asp-area="" asp-controller="Management" asp-action="Membership">Membresia</a></li>
                             <li><a class="dropdown-item" asp-area="" asp-controller="Management" asp-action="Departments">Departamentos</a></li>
                         </ul>

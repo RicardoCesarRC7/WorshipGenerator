@@ -5,6 +5,7 @@
         const self = this;
 
         self.department = null;
+        self.functionController = null;
 
         self.departments = [];
 
@@ -13,6 +14,12 @@
         self.init = () => {
 
             self.department = self.initDepartmentModel();
+
+            self.functionController = new functionController($scope, $http);
+            self.functionController.init();
+
+            self.department.functions = self.functionController.functions;
+
             self.initFormValidation();
             self.list();
         }
@@ -46,11 +53,15 @@
 
         self.add = () => {
 
+            self.department.functions = self.functionController.functions;
+
             self.validate();
 
             if (self.department.isValid) {
 
                 showLoader('Estamos inserindo as informações do departamento...');
+
+                /*self.department.functions = self.functionController.functions.filter(i => i.isValid);*/
 
                 console.log(self.department)
 
@@ -85,11 +96,15 @@
 
         self.update = () => {
 
+            self.department.functions = self.functionController.functions;
+
             self.validate();
 
             if (self.department.isValid) {
 
                 showLoader('Estamos atualizando as informações do departamento...');
+
+                self.department.functions = self.functionController.functions.filter(i => i.isValid);
 
                 $http({
                     method: 'POST',
@@ -168,11 +183,29 @@
                 self.department.isValid = false;
                 return;
             }
+
+            if (self.department.functions != null && self.department.functions.length > 0) {
+
+                angular.forEach(self.department.functions, function (departmentFunction, i) {
+
+                    self.functionController.validate(departmentFunction);
+                });
+
+                if (self.department.functions.filter(i => !i.isValid) > 0) {
+
+                    self.department.isValid = false;
+                    return;
+                }
+            }
         }
 
         self.openManageDepartmentModal = (department) => {
 
             self.department = self.initDepartmentModel();
+
+            self.functionController.functions = [];
+            self.functionController.add();
+
             self.isEdit = false;
 
             if (department) {
@@ -180,6 +213,9 @@
                 self.isEdit = true;
 
                 self.department = department;
+
+                if (self.department.functions != null && self.department.functions.length > 0)
+                    self.functionController.functions = department.functions;
             }
 
             $('#manage-department-modal').modal('toggle');
